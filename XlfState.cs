@@ -16,11 +16,6 @@
             Translated,             // Indicates that the item has been translated.
         }
 
-        public XlfState(string state)
-        {
-
-        }
-
         bool IsUserDefined {
             get;
         }

@@ -7,10 +7,15 @@ using System.Xml.Linq;
 
 namespace xlflib
 {
-    public class Xml
+    public static class XmlUtil
     {
         public static string GetAttributeIfExists(XElement node, string name)
         {
+            if (node == null)
+            {
+                throw new ArgumentNullException(nameof(node));
+            }
+
             return node.Attributes(name).Any() ? node.Attribute(name).Value : string.Empty;
         }
 

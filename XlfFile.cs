@@ -19,24 +19,24 @@ namespace xlflib
 
             public string TargetLang
             {
-                get { return Xml.GetAttributeIfExists(node, "target-language"); }
+                get { return XmlUtil.GetAttributeIfExists(node, "target-language"); }
             }
             public string ToolId
             {
-                get { return Xml.GetAttributeIfExists(node, "tool-id"); }
+                get { return XmlUtil.GetAttributeIfExists(node, "tool-id"); }
             }
 
             public string ProductName
             {
-                get { return Xml.GetAttributeIfExists(node, "product-name"); }
+                get { return XmlUtil.GetAttributeIfExists(node, "product-name"); }
             }
             public string ProductVersion
             {
-                get { return Xml.GetAttributeIfExists(node, "product-version"); }
+                get { return XmlUtil.GetAttributeIfExists(node, "product-version"); }
             }
             public string BuildNum
             {
-                get { return Xml.GetAttributeIfExists(node, "build-num"); }
+                get { return XmlUtil.GetAttributeIfExists(node, "build-num"); }
             }
         }
 

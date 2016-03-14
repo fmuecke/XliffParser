@@ -12,13 +12,13 @@ namespace xlflib
     public class XlfDocument
     {
         private XDocument doc;
-        public XlfDocument(string filename)
+        public XlfDocument(string fileName)
         {
-            Filename = filename;
-            doc = XDocument.Load(Filename);
+            FileName = fileName;
+            doc = XDocument.Load(FileName);
         }
 
-        public string Filename
+        public string FileName
         { get; }
 
         public string Version
@@ -35,7 +35,7 @@ namespace xlflib
 
         public void Save()
         {
-            this.doc.Save(this.Filename);
+            this.doc.Save(this.FileName);
         }
 
         public enum SaveMode
@@ -43,9 +43,14 @@ namespace xlflib
             Default, Sorted
         }
 
-        public void SaveAsResX(string filename, SaveMode mode = SaveMode.Default)
+        public void SaveAsResX(string fileName)
         {
-            using (ResXResourceWriter resx = new ResXResourceWriter(filename))
+            SaveAsResX(fileName, SaveMode.Default);
+        }
+
+        public void SaveAsResX(string fileName, SaveMode mode)
+        {
+            using (ResXResourceWriter resx = new ResXResourceWriter(fileName))
             {
                 var nodes = new List<ResXDataNode>();
                 foreach (var f in Files)
@@ -57,7 +62,7 @@ namespace xlflib
                         {
                             id = u.Optional.Resname;
                         }
-                        else if (id.Length > 5 && id.Substring(0, 5).ToLowerInvariant() == "resx/")
+                        else if (id.Length > 5 && id.Substring(0, 5).ToUpperInvariant() == "RESX/")
                         {
                             id = id.Substring(5);
                         }
@@ -92,12 +97,12 @@ namespace xlflib
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="filename"></param>
+        /// <param name="fileName"></param>
         /// <returns>Number of updated and number of added items</returns>
-        public Tuple<int, int> UpdateFromResX(string filename)
+        public Tuple<int, int> UpdateFromResX(string fileName)
         {
             var resxData = new Dictionary<string, Tuple<string, string>>(); // name, data, comment
-            using (var resx = new ResXResourceReader(filename))
+            using (var resx = new ResXResourceReader(fileName))
             {
                 resx.UseResXDataNodes = true;
                 var dict = resx.GetEnumerator();

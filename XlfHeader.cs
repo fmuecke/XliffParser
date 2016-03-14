@@ -4,7 +4,7 @@ namespace xlflib
 {
     public class XlfHeader
     {
-        public XlfHeader(XElement xElement)
+        public XlfHeader(XElement e)
         {
         }
     }

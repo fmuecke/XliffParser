@@ -61,12 +61,12 @@ namespace xlflib
             /// <summary>
             /// Indicates whether a translation is final or has passed its final review.
             /// </summary>
-            public string Approved { get { return Xml.GetAttributeIfExists(this.node, "approved"); } }
+            public string Approved { get { return XmlUtil.GetAttributeIfExists(this.node, "approved"); } }
 
             /// <summary>
             /// Indicates whether or not the text referred to should be translated.
             /// </summary>
-            public string Translate { get { return Xml.GetAttributeIfExists(this.node, "translate"); } }
+            public string Translate { get { return XmlUtil.GetAttributeIfExists(this.node, "translate"); } }
 
             /// <summary>
             /// The status of a particular translation in a <target> or <bin-target> element.
@@ -77,7 +77,7 @@ namespace xlflib
                 get
                 {
                     var ns = this.node.Document.Root.Name.Namespace;
-                    return Xml.GetAttributeIfExists(this.node.Element(ns + "target"), "state");
+                    return XmlUtil.GetAttributeIfExists(this.node.Element(ns + "target"), "state");
                 }
                 set
                 {
@@ -91,13 +91,13 @@ namespace xlflib
             /// apply different processes to the data. For example: datatype="winres" specifies that the content is Windows
             /// resources which would allow using the Win32 API in rendering the content.
             /// </summary>
-            public string Datatype { get { return Xml.GetAttributeIfExists(this.node, "datatype"); } } // TODO later: use XlfDataType
+            public string DataType { get { return XmlUtil.GetAttributeIfExists(this.node, "datatype"); } } // TODO later: use XlfDataType
 
             /// <summary>
             ///  Indicates the resource type of the container element.
             /// </summary>
             public string Restype {
-                get { return Xml.GetAttributeIfExists(this.node, "restype"); }
+                get { return XmlUtil.GetAttributeIfExists(this.node, "restype"); }
                 set { this.node.SetAttributeValue("restype", value); }
             }
 
@@ -107,7 +107,7 @@ namespace xlflib
             /// </summary>
             public string Resname
             {
-                get { return Xml.GetAttributeIfExists(this.node, "resname"); }
+                get { return XmlUtil.GetAttributeIfExists(this.node, "resname"); }
                 set { this.node.SetAttributeValue("resname", value); }
             }
 
