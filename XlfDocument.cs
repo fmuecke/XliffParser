@@ -109,11 +109,12 @@ namespace xlflib
                 while (dict.MoveNext())
                 {
                     var x = dict.Value as ResXDataNode;
+                    var value = x.GetValue((ITypeResolutionService)null) as string;
                     resxData.Add(
                         dict.Key as string,
                         Tuple.Create(
-                            x.GetValue((ITypeResolutionService)null) as string,
-                            x.Comment));
+                            value.Replace("\r\n", "\n"),
+                            x.Comment.Replace("\r\n", "\n")));
                 }
             }
 
