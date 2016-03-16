@@ -12,10 +12,16 @@ namespace xlflib
     public class XlfDocument
     {
         private XDocument doc;
+
         public XlfDocument(string fileName)
         {
             FileName = fileName;
             doc = XDocument.Load(FileName);
+        }
+
+        public enum SaveMode
+        {
+            Default, Sorted
         }
 
         public string FileName
@@ -36,11 +42,6 @@ namespace xlflib
         public void Save()
         {
             this.doc.Save(this.FileName);
-        }
-
-        public enum SaveMode
-        {
-            Default, Sorted
         }
 
         public void SaveAsResX(string fileName)
@@ -95,7 +96,7 @@ namespace xlflib
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="fileName"></param>
         /// <returns>Number of updated and number of added items</returns>
@@ -125,7 +126,7 @@ namespace xlflib
                 foreach (var u in f.TransUnits)
                 {
                     var key = u.Optional.Resname.Length > 0 ? u.Optional.Resname : u.Id;
-                    if (resxData.ContainsKey(key) && u.Source != resxData[key].Item1)
+                    if (resxData.ContainsKey(key) && u.Source.Replace("\r\n", "\n") != resxData[key].Item1)
                     {
                         // source text changed
                         u.Source = resxData[key].Item1;
