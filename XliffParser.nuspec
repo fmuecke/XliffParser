@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>fmdev.XliffParser</id>
+    <version>0.3.1.0</version>
+    <title>XliffParser</title>
+    <authors>Florian Mücke</authors>
+    <owners>Florian Mücke</owners>
+    <licenseUrl>https://raw.githubusercontent.com/fmuecke/XliffParser/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/fmuecke/XliffParser</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Parser for XLIFF (XML Localization Interchange File Format) files.</description>
+    <releaseNotes>Licensed under BSD-2-clause</releaseNotes>
+    <copyright>Copyright © 2016  Florian Mücke</copyright>
+    <tags>XLF XLIFF Resx translation</tags>
+	<dependencies />
+  </metadata>
+</package>
