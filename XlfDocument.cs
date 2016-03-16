@@ -109,13 +109,11 @@ namespace xlflib
                 var dict = resx.GetEnumerator();
                 while (dict.MoveNext())
                 {
-                    var x = dict.Value as ResXDataNode;
-                    var value = x.GetValue((ITypeResolutionService)null) as string;
+                    var item = dict.Value as ResXDataNode;
+                    var value = item.GetValue((ITypeResolutionService)null) as string;
                     resxData.Add(
                         dict.Key as string,
-                        Tuple.Create(
-                            value.Replace("\r\n", "\n"),
-                            x.Comment.Replace("\r\n", "\n")));
+                        Tuple.Create(value, item.Comment));
                 }
             }
 
@@ -126,7 +124,8 @@ namespace xlflib
                 foreach (var u in f.TransUnits)
                 {
                     var key = u.Optional.Resname.Length > 0 ? u.Optional.Resname : u.Id;
-                    if (resxData.ContainsKey(key) && u.Source.Replace("\r\n", "\n") != resxData[key].Item1)
+                    if (resxData.ContainsKey(key) &&
+                        XmlUtil.NormalizeLineBreaks(u.Source) != XmlUtil.NormalizeLineBreaks(resxData[key].Item1))
                     {
                         // source text changed
                         u.Source = resxData[key].Item1;

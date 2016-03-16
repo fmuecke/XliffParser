@@ -19,5 +19,9 @@ namespace xlflib
             return node.Attributes(name).Any() ? node.Attribute(name).Value : string.Empty;
         }
 
+        public static string NormalizeLineBreaks(string s)
+        {
+            return s.Replace("\r", string.Empty);
+        }
     }
 }
