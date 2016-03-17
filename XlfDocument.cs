@@ -51,7 +51,7 @@ namespace xlflib
 
         public void SaveAsResX(string fileName, SaveMode mode)
         {
-            using (ResXResourceWriter resx = new ResXResourceWriter(fileName))
+            using (var resx = new ResXResourceWriter(fileName))
             {
                 var nodes = new List<ResXDataNode>();
                 foreach (var f in Files)
@@ -68,10 +68,10 @@ namespace xlflib
                             id = id.Substring(5);
                         }
 
-                        var node = new ResXDataNode(id, u.Target);
+                        var node = new ResXDataNode(id, u.Target.Replace("\n", Environment.NewLine));
                         if (u.Optional.Notes.Count > 0)
                         {
-                            node.Comment = u.Optional.Notes.First();
+                            node.Comment = u.Optional.Notes.First().Replace("\n", Environment.NewLine);
                         }
                         nodes.Add(node);
                     }

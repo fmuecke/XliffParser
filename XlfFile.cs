@@ -8,38 +8,6 @@ namespace xlflib
     {
         private XElement node;
 
-        public class Optionals
-        {
-            private XElement node;
-
-            internal Optionals(XElement node)
-            {
-                this.node = node;
-            }
-
-            public string TargetLang
-            {
-                get { return XmlUtil.GetAttributeIfExists(node, "target-language"); }
-            }
-            public string ToolId
-            {
-                get { return XmlUtil.GetAttributeIfExists(node, "tool-id"); }
-            }
-
-            public string ProductName
-            {
-                get { return XmlUtil.GetAttributeIfExists(node, "product-name"); }
-            }
-            public string ProductVersion
-            {
-                get { return XmlUtil.GetAttributeIfExists(node, "product-version"); }
-            }
-            public string BuildNum
-            {
-                get { return XmlUtil.GetAttributeIfExists(node, "build-num"); }
-            }
-        }
-
         internal XlfFile(XElement node)
         {
             this.node = node;
@@ -66,12 +34,15 @@ namespace xlflib
             {
                 return this.node.Attribute("datatype").Value;
             }
-            //private set; 
-        } 
+            //private set;
+        }
 
         public string SourceLang { get { return this.node.Attribute("source-language").Value; } }
+
         public Optionals Optional { get; private set; }
+
         public XlfHeader Header { get; private set; }
+
         public List<XlfTransUnit> TransUnits
         {
             get
@@ -89,6 +60,46 @@ namespace xlflib
             this.node.Descendants(ns + "trans-unit").Last().AddAfterSelf(n);
 
             return new XlfTransUnit(n, id, source, target);
+        }
+
+        public class Optionals
+        {
+            private XElement node;
+
+            internal Optionals(XElement node)
+            {
+                this.node = node;
+            }
+
+            public string TargetLang
+            {
+                get { return GetAttributeIfExists("target-language"); }
+            }
+
+            public string ToolId
+            {
+                get { return GetAttributeIfExists("tool-id"); }
+            }
+
+            public string ProductName
+            {
+                get { return GetAttributeIfExists("product-name"); }
+            }
+
+            public string ProductVersion
+            {
+                get { return GetAttributeIfExists("product-version"); }
+            }
+
+            public string BuildNum
+            {
+                get { return GetAttributeIfExists("build-num"); }
+            }
+
+            public string GetAttributeIfExists(string name)
+            {
+                return XmlUtil.GetAttributeIfExists(node, name);
+            }
         }
     }
 }
