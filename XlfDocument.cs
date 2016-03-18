@@ -99,8 +99,8 @@ namespace xlflib
         ///
         /// </summary>
         /// <param name="fileName"></param>
-        /// <returns>Number of updated and number of added items</returns>
-        public Tuple<int, int> UpdateFromResX(string fileName)
+        /// <returns>Return the number of updated/added/removed items</returns>
+        public Tuple<int, int, int> UpdateFromResX(string fileName)
         {
             var resxData = new Dictionary<string, Tuple<string, string>>(); // name, data, comment
             using (var resx = new ResXResourceReader(fileName))
@@ -119,20 +119,34 @@ namespace xlflib
 
             int updatedItems = 0;
             int addedItems = 0;
+            int removedItems = 0;
             foreach (var f in Files)
             {
+                var removedUnits = new List<XlfTransUnit>();
                 foreach (var u in f.TransUnits)
                 {
                     var key = u.Optional.Resname.Length > 0 ? u.Optional.Resname : u.Id;
-                    if (resxData.ContainsKey(key) &&
-                        XmlUtil.NormalizeLineBreaks(u.Source) != XmlUtil.NormalizeLineBreaks(resxData[key].Item1))
+                    if (resxData.ContainsKey(key))
                     {
-                        // source text changed
-                        u.Source = resxData[key].Item1;
-                        u.Optional.TargetState = "new";
-                        ++updatedItems;
+                        if (XmlUtil.NormalizeLineBreaks(u.Source) != XmlUtil.NormalizeLineBreaks(resxData[key].Item1))
+                        {
+                            // source text changed
+                            u.Source = resxData[key].Item1;
+                            u.Optional.TargetState = "new";
+                            ++updatedItems;
+                        }
+                    }
+                    else
+                    {
+                        removedUnits.Add(u);
                     }
                     resxData.Remove(key);
+                }
+
+                foreach (var u in removedUnits)
+                {
+                    f.TransUnits.Remove(u);
+                    ++removedItems;
                 }
 
                 foreach (var d in resxData)
@@ -143,7 +157,7 @@ namespace xlflib
                 }
             }
 
-            return Tuple.Create(updatedItems, addedItems);
+            return Tuple.Create(updatedItems, addedItems, removedItems);
         }
     }
 }
