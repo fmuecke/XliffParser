@@ -62,6 +62,22 @@ namespace xlflib
             return new XlfTransUnit(n, id, source, target);
         }
 
+        public void RemoveTransUnitById(string id)
+        {
+            RemoveTransUnit("id", id);
+        }
+
+        public void RemoveTransUnitByResname(string resname)
+        {
+            RemoveTransUnit("resname", resname);
+        }
+
+        private void RemoveTransUnit(string identifierName, string value)
+        {
+            var ns = this.node.Document.Root.Name.Namespace;
+            this.node.Descendants(ns + "trans-unit").Where(u => u.Attribute(identifierName).Value == value).Remove();
+        }
+
         public class Optionals
         {
             private XElement node;

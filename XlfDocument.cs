@@ -145,7 +145,14 @@ namespace xlflib
 
                 foreach (var u in removedUnits)
                 {
-                    f.TransUnits.Remove(u);
+                    if (string.IsNullOrWhiteSpace(u.Optional.Resname))
+                    {
+                        f.RemoveTransUnitById(u.Id);
+                    }
+                    else
+                    {
+                        f.RemoveTransUnitByResname(u.Optional.Resname);
+                    }
                     ++removedItems;
                 }
 
