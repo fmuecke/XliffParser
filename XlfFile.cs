@@ -8,6 +8,9 @@ namespace xlflib
     {
         private XElement node;
 
+
+
+
         internal XlfFile(XElement node)
         {
             this.node = node;
@@ -43,12 +46,12 @@ namespace xlflib
 
         public XlfHeader Header { get; private set; }
 
-        public List<XlfTransUnit> TransUnits
+        public IEnumerable<XlfTransUnit> TransUnits
         {
             get
             {
                 var ns = this.node.Document.Root.Name.Namespace;
-                return new List<XlfTransUnit>(this.node.Descendants(ns + "trans-unit").Select(t => new XlfTransUnit(t)));
+                return this.node.Descendants(ns + "trans-unit").Select(t => new XlfTransUnit(t));
             }
             //private set;
         }

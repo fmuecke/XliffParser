@@ -30,12 +30,12 @@ namespace xlflib
         public string Version
         { get { return this.doc.Root.Attribute("version").Value; } }
 
-        public List<XlfFile> Files
+        public IEnumerable<XlfFile> Files
         {
             get
             {
                 var ns = this.doc.Root.Name.Namespace;
-                return new List<XlfFile>(this.doc.Descendants(ns + "file").Select(f => new XlfFile(f)));
+                return this.doc.Descendants(ns + "file").Select(f => new XlfFile(f));
             }
         }
 
