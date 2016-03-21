@@ -75,7 +75,11 @@ namespace xlflib
         private void RemoveTransUnit(string identifierName, string value)
         {
             var ns = this.node.Document.Root.Name.Namespace;
-            this.node.Descendants(ns + "trans-unit").Where(u => u.Attribute(identifierName).Value == value).Remove();
+            this.node.Descendants(ns + "trans-unit").Where(u =>
+            {
+                var a = u.Attribute(identifierName);
+                return a != null && a.Value == value;
+            }).Remove();
         }
 
         public class Optionals
