@@ -19,6 +19,16 @@ namespace xlflib
             return node.Attributes(name).Any() ? node.Attribute(name).Value : string.Empty;
         }
 
+        public static int GetIntAttributeIfExists(XElement node, string name)
+        {
+            if (node == null)
+            {
+                throw new ArgumentNullException(nameof(node));
+            }
+
+            return node.Attributes(name).Any() ? int.Parse(node.Attribute(name).Value) : 0;
+        }
+
         public static string NormalizeLineBreaks(string s)
         {
             return s.Replace("\r", string.Empty);

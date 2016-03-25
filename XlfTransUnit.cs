@@ -41,6 +41,7 @@ namespace xlflib
             get { return this.node.Element(ns + "source").Value; }
             set { this.node.SetElementValue(ns + "source", value); }
         }
+
         public string Target
         {
             get { return this.node.Element(ns + "target").Value; }
@@ -96,13 +97,14 @@ namespace xlflib
             /// <summary>
             ///  Indicates the resource type of the container element.
             /// </summary>
-            public string Restype {
+            public string Restype
+            {
                 get { return XmlUtil.GetAttributeIfExists(this.node, "restype"); }
                 set { this.node.SetAttributeValue("restype", value); }
             }
 
             /// <summary>
-            /// Resource name or identifier of a item. For example: the key in the key/value pair in a Java properties file, 
+            /// Resource name or identifier of a item. For example: the key in the key/value pair in a Java properties file,
             /// the ID of a string in a Windows string table, the index value of an entry in a database table, etc.
             /// </summary>
             public string Resname
@@ -111,21 +113,12 @@ namespace xlflib
                 set { this.node.SetAttributeValue("resname", value); }
             }
 
-            /// <summary>
-            ///  The <note> element is used to add localization-related comments to the XLIFF document. The content of <note> 
-            ///  may be instructions from developers about how to handle the <source>, comments from the translator about the
-            ///  translation, or any comment from anyone involved in processing the XLIFF file. The optional xml:lang attribute
-            ///  specifies the language of the note content. The optional from attribute indicates who entered the note. 
-            ///  The optional priority attribute allows a priority from 1 (high) to 10 (low) to be assigned to the note. 
-            ///  The optional annotates attribute indicates if the note is a general note or, in the case of a <trans-unit>, 
-            ///  pertains specifically to the <source> or the <target> element.
-            /// </summary>
-            public List<string> Notes
+            public List<XlfNote> Notes
             {
                 get
                 {
                     var ns = this.node.Document.Root.Name.Namespace;
-                    return new List<string>(this.node.Elements(ns + "note").Select(n => n.Value));
+                    return new List<XlfNote>(this.node.Descendants(ns + "note").Select(t => new XlfNote(t)));
                 }
             }
 
@@ -134,6 +127,16 @@ namespace xlflib
                 var ns = this.node.Document.Root.Name.Namespace;
                 var n = new XElement(ns + "note", comment);
                 this.node.DescendantNodes().Last().AddAfterSelf(n);
+            }
+
+            private void RemoveNote(string attributeName, string value)
+            {
+                var ns = this.node.Document.Root.Name.Namespace;
+                this.node.Descendants(ns + "note").Where(u =>
+                {
+                    var a = u.Attribute(attributeName);
+                    return a != null && a.Value == value;
+                }).Remove();
             }
         }
     }

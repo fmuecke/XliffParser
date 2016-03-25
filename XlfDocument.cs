@@ -69,9 +69,9 @@ namespace xlflib
                         }
 
                         var node = new ResXDataNode(id, u.Target.Replace("\n", Environment.NewLine));
-                        if (u.Optional.Notes.Count > 0)
+                        if (u.Optional.Notes.Count() > 0)
                         {
-                            node.Comment = u.Optional.Notes.First().Replace("\n", Environment.NewLine);
+                            node.Comment = u.Optional.Notes.First().Value.Replace("\n", Environment.NewLine);
                         }
                         nodes.Add(node);
                     }
@@ -133,6 +133,7 @@ namespace xlflib
                             // source text changed
                             u.Source = resxData[key].Item1;
                             u.Optional.TargetState = "new";
+                            u.Optional.Notes.First().Value = resxData[key].Item2;
                             ++updatedItems;
                         }
                     }
@@ -158,8 +159,9 @@ namespace xlflib
 
                 foreach (var d in resxData)
                 {
-                    var unit = f.AddTransUnit(d.Key, d.Value.Item1, d.Value.Item2);
+                    var unit = f.AddTransUnit(d.Key, d.Value.Item1, d.Value.Item1);
                     unit.Optional.TargetState = "new";
+                    unit.Optional.Notes.First().Value = d.Value.Item2;
                     ++addedItems;
                 }
             }
