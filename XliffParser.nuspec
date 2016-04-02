@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/fmuecke/XliffParser</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Licensed under BSD-2-clause</releaseNotes>
+    <releaseNotes>fixed namespace issues with notes</releaseNotes>
     <copyright>Copyright © 2016  Florian Mücke</copyright>
     <tags>XLF XLIFF Resx translation</tags>
 	<dependencies />
