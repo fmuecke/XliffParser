@@ -35,7 +35,7 @@ namespace xlflib
             get
             {
                 var ns = this.doc.Root.Name.Namespace;
-                return this.doc.Descendants(ns + "file").Select(f => new XlfFile(f));
+                return this.doc.Descendants(ns + "file").Select(f => new XlfFile(f, ns));
             }
         }
 

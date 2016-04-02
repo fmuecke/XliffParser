@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("XliffParser")]
-[assembly: AssemblyDescription("Parser for XLIFF (XML Localization Interchange File Format) files.")]
+[assembly: AssemblyTitle("XliffParserTest")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Florian Mücke")]
-[assembly: AssemblyProduct("XliffParser")]
-[assembly: AssemblyCopyright("Copyright © 2016  Florian Mücke")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("XliffParserTest")]
+[assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("6f0b5c8a-0f1c-462c-9b65-714a85342334")]
+[assembly: Guid("8f109c7f-6d9a-4176-8dbc-792b897286a5")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.3.6.0")]
-[assembly: AssemblyFileVersion("0.3.6.0")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

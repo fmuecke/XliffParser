@@ -1,0 +1,74 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using xlflib;
+
+namespace xlflib.Tests
+{
+    [TestClass()]
+    public class XlfTransUnitTests
+    {
+        private static string xlf12doc =
+"<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
+"<xliff version=\"1.2\" xmlns=\"urn:oasis:names:tc:xliff:document:1.2\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd\">" +
+"  <file datatype=\"xml\" source-language=\"en\" target-language=\"de\" original=\"Strings.resx\">" +
+"    <body>" +
+"      <group id=\"Resx\">" +
+"        <trans-unit id=\"Resx/State_new\" translate=\"yes\" xml:space=\"preserve\">" +
+"          <source>Indicates that the item is new. For example, translation units that were not in a previous version of the document.</source>" +
+"          <target state=\"new\"></target>" +
+"        </trans-unit>" +
+"        <trans-unit id=\"Resx/State_needs-review-translation\" translate=\"yes\" xml:space=\"preserve\">" +
+"          <source>Indicates that only the text of the item needs to be reviewed.</source>" +
+"          <target state=\"needs-review-translation\"></target>" +
+"        </trans-unit>" +
+"        <trans-unit id=\"Resx/State_final\" translate=\"yes\" xml:space=\"preserve\">" +
+"          <source>Indicates the terminating state.</source>" +
+"          <target state=\"final\"></target>" +
+"        </trans-unit>" +
+"        <trans-unit id=\"Resx/State_translated\" translate=\"yes\" xml:space=\"preserve\">" +
+"          <source>Indicates that the item has been translated.</source>" +
+"          <target state=\"translated\"></target>" +
+"        </trans-unit>		" +
+"        <trans-unit id=\"Resx/State_signed-off\" translate=\"yes\" xml:space=\"preserve\">" +
+"          <source>Indicates that changes are reviewed and approved.</source>" +
+"          <target state=\"signed-off\"></target>" +
+"        </trans-unit>		" +
+"        <trans-unit id=\"Resx/State_translated_withNotes\" translate=\"yes\" xml:space=\"preserve\">" +
+"          <source>Indicates that the item has been translated.</source>" +
+"          <target state=\"translated\"></target>" +
+"          <note from=\"MultilingualEditor\" annotates=\"source\" priority=\"4\">Kommentar</note>" +
+"          <note from=\"MultilingualEditor\" annotates=\"source\" priority=\"4\">k2</note>" +
+"          <note from=\"MultilingualBuild\" annotates=\"source\" priority=\"2\">Icon column</note>" +
+"        </trans-unit>" +
+"        <trans-unit id=\"Resx/NotTranslatable\" translate=\"no\" xml:space=\"preserve\">" +
+"          <source>XLIFF</source>" +
+"          <target state=\"signed-off\">XLIFF</target>" +
+"        </trans-unit>" +
+"      </group>" +
+"    </body>" +
+"  </file>" +
+"</xliff>";
+
+        [TestMethod()]
+        public void AddNoteTest()
+        {
+            var doc = XDocument.Parse(xlf12doc);
+            var ns = doc.Root.Name.Namespace;
+            var unit = new XlfTransUnit(doc.Descendants(ns + "trans-unit").First(), ns);
+            unit.Optional.AddNote("Valar morghulis!", "XliffParserTest");
+            var isWithNote = doc.ToString().Replace(" ", "").Contains("</target><notefrom=\"XliffParserTest\">Valarmorghulis!</note></trans-unit>\r\n<trans-unit");
+            Assert.IsTrue(isWithNote);
+        }
+
+        [TestMethod()]
+        public void RemoveNoteTest()
+        {
+            Assert.Fail();
+        }
+    }
+}

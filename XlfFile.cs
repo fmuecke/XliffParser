@@ -7,13 +7,12 @@ namespace xlflib
     public class XlfFile
     {
         private XElement node;
+        private XNamespace ns;
 
-
-
-
-        internal XlfFile(XElement node)
+        internal XlfFile(XElement node, XNamespace ns)
         {
             this.node = node;
+            this.ns = ns;
             Optional = new Optionals(node);
             if (node.Elements("header").Any())
             {
@@ -50,19 +49,17 @@ namespace xlflib
         {
             get
             {
-                var ns = this.node.Document.Root.Name.Namespace;
-                return this.node.Descendants(ns + "trans-unit").Select(t => new XlfTransUnit(t));
+                return this.node.Descendants(this.ns + "trans-unit").Select(t => new XlfTransUnit(t, this.ns));
             }
             //private set;
         }
 
         public XlfTransUnit AddTransUnit(string id, string source, string target)
         {
-            var ns = this.node.Document.Root.Name.Namespace;
-            var n = new XElement(ns + "trans-unit");
-            this.node.Descendants(ns + "trans-unit").Last().AddAfterSelf(n);
+            var n = new XElement(this.ns + "trans-unit");
+            this.node.Descendants(this.ns + "trans-unit").Last().AddAfterSelf(n);
 
-            return new XlfTransUnit(n, id, source, target);
+            return new XlfTransUnit(n, this.ns, id, source, target);
         }
 
         public void RemoveTransUnitById(string id)
@@ -77,8 +74,7 @@ namespace xlflib
 
         private void RemoveTransUnit(string identifierName, string value)
         {
-            var ns = this.node.Document.Root.Name.Namespace;
-            this.node.Descendants(ns + "trans-unit").Where(u =>
+            this.node.Descendants(this.ns + "trans-unit").Where(u =>
             {
                 var a = u.Attribute(identifierName);
                 return a != null && a.Value == value;

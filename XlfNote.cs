@@ -19,13 +19,10 @@ namespace xlflib
     public class XlfNote
     {
         private XElement node;
-        private XNamespace ns;
 
         public XlfNote(XElement node)
         {
             this.node = node;
-            ns = node.Document.Root.Name.Namespace;
-
             Optional = new Optionals(this.node);
         }
 
@@ -36,6 +33,11 @@ namespace xlflib
         }
 
         public Optionals Optional { get; }
+
+        public XElement GetX()
+        {
+            return this.node;
+        }
 
         public class Optionals
         {
@@ -54,7 +56,11 @@ namespace xlflib
             /// <summary>
             /// Indicates who entered the note.
             /// </summary>
-            public string From { get { return XmlUtil.GetAttributeIfExists(this.node, "from"); } }
+            public string From
+            {
+                get { return XmlUtil.GetAttributeIfExists(this.node, "from"); }
+                set { this.node.SetAttributeValue("from", value); }
+            }
 
             /// <summary>
             /// Allows a priority from 1 (high) to 10 (low) to be assigned to the note.

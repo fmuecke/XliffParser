@@ -10,24 +10,20 @@ namespace xlflib
         private XElement node;
         private XNamespace ns;
 
-        public XlfTransUnit(XElement node)
+        public XlfTransUnit(XElement node, XNamespace ns)
         {
             this.node = node;
-            ns = node.Document.Root.Name.Namespace;
+            this.ns = ns;
 
-            Optional = new Optionals(this.node);
+            Optional = new Optionals(this.node, this.ns);
         }
 
-        public XlfTransUnit(XElement node, string id, string source, string target)
+        public XlfTransUnit(XElement node, XNamespace ns, string id, string source, string target)
+            : this(node, ns)
         {
-            this.node = node;
-            ns = node.Document.Root.Name.Namespace;
-
             Id = id;
             Source = source;
             Target = target;
-
-            Optional = new Optionals(this.node);
         }
 
         public string Id
@@ -38,14 +34,14 @@ namespace xlflib
 
         public string Source
         {
-            get { return this.node.Element(ns + "source").Value; }
-            set { this.node.SetElementValue(ns + "source", value); }
+            get { return this.node.Element(this.ns + "source").Value; }
+            set { this.node.SetElementValue(this.ns + "source", value); }
         }
 
         public string Target
         {
-            get { return this.node.Element(ns + "target").Value; }
-            set { this.node.SetElementValue(ns + "target", value); }
+            get { return this.node.Element(this.ns + "target").Value; }
+            set { this.node.SetElementValue(this.ns + "target", value); }
         }
 
         public Optionals Optional { get; }
@@ -53,10 +49,12 @@ namespace xlflib
         public class Optionals
         {
             private XElement node;
+            private XNamespace ns;
 
-            internal Optionals(XElement node)
+            internal Optionals(XElement node, XNamespace ns)
             {
                 this.node = node;
+                this.ns = ns;
             }
 
             /// <summary>
@@ -77,13 +75,11 @@ namespace xlflib
             {
                 get
                 {
-                    var ns = this.node.Document.Root.Name.Namespace;
-                    return XmlUtil.GetAttributeIfExists(this.node.Element(ns + "target"), "state");
+                    return XmlUtil.GetAttributeIfExists(this.node.Element(this.ns + "target"), "state");
                 }
                 set
                 {
-                    var ns = this.node.Document.Root.Name.Namespace;
-                    this.node.Element(ns + "target").SetAttributeValue("state", value);
+                    this.node.Element(this.ns + "target").SetAttributeValue("state", value);
                 }
             } // TODO later: use XlfState
 
@@ -117,22 +113,28 @@ namespace xlflib
             {
                 get
                 {
-                    var ns = this.node.Document.Root.Name.Namespace;
-                    return new List<XlfNote>(this.node.Descendants(ns + "note").Select(t => new XlfNote(t)));
+                    return new List<XlfNote>(this.node.Descendants(this.ns + "note").Select(t => new XlfNote(t)));
                 }
+            }
+
+            public void AddNote(string comment, string from)
+            {
+                var note = new XlfNote(new XElement(this.ns + "note", comment));
+                if (!string.IsNullOrWhiteSpace(from))
+                {
+                    note.Optional.From = from;
+                }
+                this.node.Add(note.GetX());
             }
 
             public void AddNote(string comment)
             {
-                var ns = this.node.Document.Root.Name.Namespace;
-                var n = new XElement(ns + "note", comment);
-                this.node.DescendantNodes().Last().AddAfterSelf(n);
+                AddNote(comment, string.Empty);
             }
 
             private void RemoveNote(string attributeName, string value)
             {
-                var ns = this.node.Document.Root.Name.Namespace;
-                this.node.Descendants(ns + "note").Where(u =>
+                this.node.Descendants(this.ns + "note").Where(u =>
                 {
                     var a = u.Attribute(attributeName);
                     return a != null && a.Value == value;
