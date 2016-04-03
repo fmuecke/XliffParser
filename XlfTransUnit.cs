@@ -60,12 +60,20 @@ namespace xlflib
             /// <summary>
             /// Indicates whether a translation is final or has passed its final review.
             /// </summary>
-            public string Approved { get { return XmlUtil.GetAttributeIfExists(this.node, "approved"); } }
+            public string Approved
+            {
+                get { return XmlUtil.GetAttributeIfExists(this.node, "approved"); }
+                set { this.node.SetAttributeValue("approved", value); }
+            }
 
             /// <summary>
             /// Indicates whether or not the text referred to should be translated.
             /// </summary>
-            public string Translate { get { return XmlUtil.GetAttributeIfExists(this.node, "translate"); } }
+            public string Translate
+            {
+                get { return XmlUtil.GetAttributeIfExists(this.node, "translate"); }
+                set { this.node.SetAttributeValue("translate", value); }
+            }
 
             /// <summary>
             /// The status of a particular translation in a <target> or <bin-target> element.
@@ -88,7 +96,11 @@ namespace xlflib
             /// apply different processes to the data. For example: datatype="winres" specifies that the content is Windows
             /// resources which would allow using the Win32 API in rendering the content.
             /// </summary>
-            public string DataType { get { return XmlUtil.GetAttributeIfExists(this.node, "datatype"); } } // TODO later: use XlfDataType
+            public string DataType
+            {
+                get { return XmlUtil.GetAttributeIfExists(this.node, "datatype"); }
+                set { this.node.SetAttributeValue("datatype", value); }
+            } // TODO later: use XlfDataType
 
             /// <summary>
             ///  Indicates the resource type of the container element.
@@ -109,11 +121,11 @@ namespace xlflib
                 set { this.node.SetAttributeValue("resname", value); }
             }
 
-            public List<XlfNote> Notes
+            public IEnumerable<XlfNote> Notes
             {
                 get
                 {
-                    return new List<XlfNote>(this.node.Descendants(this.ns + "note").Select(t => new XlfNote(t)));
+                    return this.node.Descendants(this.ns + "note").Select(t => new XlfNote(t));
                 }
             }
 
@@ -124,7 +136,7 @@ namespace xlflib
                 {
                     note.Optional.From = from;
                 }
-                this.node.Add(note.GetX());
+                this.node.Add(note.GetNode());
             }
 
             public void AddNote(string comment)

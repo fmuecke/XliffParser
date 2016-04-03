@@ -28,7 +28,10 @@ namespace xlflib
         { get; }
 
         public string Version
-        { get { return this.doc.Root.Attribute("version").Value; } }
+        {
+            get { return this.doc.Root.Attribute("version").Value; }
+            set { this.doc.Root.SetAttributeValue("version", value); }
+        }
 
         public IEnumerable<XlfFile> Files
         {
@@ -37,6 +40,25 @@ namespace xlflib
                 var ns = this.doc.Root.Name.Namespace;
                 return this.doc.Descendants(ns + "file").Select(f => new XlfFile(f, ns));
             }
+        }
+
+        public XlfFile AddFile(string original, string dataType, string sourceLang)
+        {
+            var ns = this.doc.Root.Name.Namespace;
+            var f = new XElement(ns + "file");
+            this.doc.Descendants(ns + "file").Last().AddAfterSelf(f);
+
+            return new XlfFile(f, ns, original, dataType, sourceLang);
+        }
+
+        public void RemoveFile(string original)
+        {
+            var ns = this.doc.Root.Name.Namespace;
+            this.doc.Descendants(ns + "file").Where(u =>
+            {
+                var a = u.Attribute("original");
+                return a != null && a.Value == original;
+            }).Remove();
         }
 
         public void Save()

@@ -34,7 +34,7 @@ namespace xlflib
 
         public Optionals Optional { get; }
 
-        public XElement GetX()
+        public XElement GetNode()
         {
             return this.node;
         }
@@ -51,7 +51,11 @@ namespace xlflib
             /// <summary>
             /// Specifies the language of the note content.
             /// </summary>
-            public string Lang { get { return XmlUtil.GetAttributeIfExists(this.node, "xml:lang"); } }
+            public string Lang
+            {
+                get { return XmlUtil.GetAttributeIfExists(this.node, "xml:lang"); }
+                set { this.node.SetAttributeValue("xml:lang", value); }
+            }
 
             /// <summary>
             /// Indicates who entered the note.
@@ -65,13 +69,21 @@ namespace xlflib
             /// <summary>
             /// Allows a priority from 1 (high) to 10 (low) to be assigned to the note.
             /// </summary>
-            public int Priority { get { return XmlUtil.GetIntAttributeIfExists(this.node, "priority"); } }
+            public int Priority
+            {
+                get { return XmlUtil.GetIntAttributeIfExists(this.node, "priority"); }
+                set { this.node.SetAttributeValue("priority", value); }
+            }
 
             /// <summary>
             /// Indicates if the note is a general note or, in the case of a <trans-unit>,
             /// pertains specifically to the <source> or the <target> element.
             /// </summary>
-            public string Annotates { get { return XmlUtil.GetAttributeIfExists(this.node, "annotates"); } }
+            public string Annotates
+            {
+                get { return XmlUtil.GetAttributeIfExists(this.node, "annotates"); }
+                set { this.node.SetAttributeValue("annotates", value); }
+            }
         }
     }
 }

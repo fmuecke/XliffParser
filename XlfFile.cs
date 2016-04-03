@@ -20,26 +20,32 @@ namespace xlflib
             }
         }
 
+        internal XlfFile(XElement node, XNamespace ns, string original, string dataType, string sourceLang)
+            : this(node, ns)
+        {
+            Original = original;
+            DataType = dataType;
+            SourceLang = sourceLang;
+        }
+
         public string Original
         {
-            get
-            {
-                return this.node.Attribute("original").Value;
-            }
-            //private set;
+            get { return this.node.Attribute("original").Value; }
+            private set { this.node.SetAttributeValue("original", value); }
         }
 
         // xml, html etc.
         public string DataType
         {
-            get
-            {
-                return this.node.Attribute("datatype").Value;
-            }
-            //private set;
+            get { return this.node.Attribute("datatype").Value; }
+            private set { this.node.SetAttributeValue("datatype", value); }
         }
 
-        public string SourceLang { get { return this.node.Attribute("source-language").Value; } }
+        public string SourceLang
+        {
+            get { return this.node.Attribute("source-language").Value; }
+            private set { this.node.SetAttributeValue("source-language", value); }
+        }
 
         public Optionals Optional { get; private set; }
 
@@ -51,7 +57,6 @@ namespace xlflib
             {
                 return this.node.Descendants(this.ns + "trans-unit").Select(t => new XlfTransUnit(t, this.ns));
             }
-            //private set;
         }
 
         public XlfTransUnit AddTransUnit(string id, string source, string target)
@@ -93,26 +98,31 @@ namespace xlflib
             public string TargetLang
             {
                 get { return GetAttributeIfExists("target-language"); }
+                set { this.node.SetAttributeValue("target-language", value); }
             }
 
             public string ToolId
             {
                 get { return GetAttributeIfExists("tool-id"); }
+                set { this.node.SetAttributeValue("tool-id", value); }
             }
 
             public string ProductName
             {
                 get { return GetAttributeIfExists("product-name"); }
+                set { this.node.SetAttributeValue("product-name", value); }
             }
 
             public string ProductVersion
             {
                 get { return GetAttributeIfExists("product-version"); }
+                set { this.node.SetAttributeValue("product-version", value); }
             }
 
             public string BuildNum
             {
                 get { return GetAttributeIfExists("build-num"); }
+                set { this.node.SetAttributeValue("build-num", value); }
             }
 
             public string GetAttributeIfExists(string name)
