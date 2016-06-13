@@ -62,7 +62,30 @@ namespace xlflib
         public XlfTransUnit AddTransUnit(string id, string source, string target)
         {
             var n = new XElement(this.ns + "trans-unit");
-            this.node.Descendants(this.ns + "trans-unit").Last().AddAfterSelf(n);
+            var transUnits = this.node.Descendants(this.ns + "trans-unit").ToList();
+
+            if (transUnits.Any())
+            {
+                transUnits.Last().AddAfterSelf(n);
+            }
+            else
+            {
+                var bodyElements = this.node.Descendants(this.ns + "body").ToList();
+
+                XElement body;
+
+                if (bodyElements.Any())
+                {
+                    body = bodyElements.First();
+                }
+                else
+                {
+                    body = new XElement(this.ns + "body");
+                    this.node.Add(body);
+                }
+
+                body.Add(n);
+            }
 
             return new XlfTransUnit(n, this.ns, id, source, target);
         }
