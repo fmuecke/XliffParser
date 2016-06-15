@@ -144,6 +144,18 @@ namespace xlflib
                 AddNote(comment, string.Empty);
             }
 
+            public void SetCommentFromResx(string comment)
+            {
+                if (Notes.Any())
+                {
+                    Notes.First().Value = comment;
+                }
+                else
+                {
+                    AddNote(comment);
+                }
+            }
+
             private void RemoveNote(string attributeName, string value)
             {
                 this.node.Descendants(this.ns + "note").Where(u =>

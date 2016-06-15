@@ -155,7 +155,8 @@ namespace xlflib
                             // source text changed
                             u.Source = resxData[key].Item1;
                             u.Optional.TargetState = "new";
-                            u.Optional.Notes.First().Value = resxData[key].Item2;
+                            u.Optional.SetCommentFromResx(resxData[key].Item2);
+
                             ++updatedItems;
                         }
                     }
@@ -183,7 +184,8 @@ namespace xlflib
                 {
                     var unit = f.AddTransUnit(d.Key, d.Value.Item1, d.Value.Item1);
                     unit.Optional.TargetState = "new";
-                    unit.Optional.Notes.First().Value = d.Value.Item2;
+                    unit.Optional.SetCommentFromResx(d.Value.Item2);
+                    
                     ++addedItems;
                 }
             }
