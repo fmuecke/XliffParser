@@ -12,7 +12,7 @@ namespace xlflib.Tests
     [TestClass()]
     public class XlfTransUnitTests
     {
-        private static string xlf11doc = 
+        private static string xlf11doc =
             "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
             "<xliff version=\"1.1\" xmlns:rwt=\"http://www.schaudin.com/xmlns/rwt11\">" +
             "  <file original=\"Strings.resx\" source-language=\"en\" datatype=\"resx\" tool=\"RC-WinTrans\" rwt:crc=\"0\" target-language=\"en-US\">" +
