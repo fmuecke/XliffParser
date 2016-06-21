@@ -15,9 +15,10 @@ More information on XLIFF can be found here:
 
 ## Available on [nuget.org](https://www.nuget.org/packages/fmdev.XliffParser/)
 
+[![NuGet version](https://badge.fury.io/nu/fmdev.XliffParser.svg)](https://badge.fury.io/nu/fmdev.XliffParser)
+
 To install XliffParser, run the following command in the Package Manager Console
 
     Install-Package fmdev.XliffParser
 
-[![NuGet version](https://badge.fury.io/nu/fmdev.XliffParser.svg)](https://badge.fury.io/nu/fmdev.XliffParser)
 
