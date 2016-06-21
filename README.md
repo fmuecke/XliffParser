@@ -1,5 +1,7 @@
 # XliffParser
 
+[![NuGet version](https://badge.fury.io/nu/fmdev.XliffParser.svg)](https://badge.fury.io/nu/fmdev.XliffParser)
+
 This library is intended as a thin layer above the original markup to help access the contents of XLIFF (XML Localization Interchange File Format) files.
 
 Its main purpose is:
@@ -14,8 +16,6 @@ More information on XLIFF can be found here:
 - [OASIS XLIFF v2.0](http://docs.oasis-open.org/xliff/xliff-core/v2.0/xliff-core-v2.0.html) *(Not yet supported!)*
 
 ## Available on [nuget.org](https://www.nuget.org/packages/fmdev.XliffParser/)
-
-[![NuGet version](https://badge.fury.io/nu/fmdev.XliffParser.svg)](https://badge.fury.io/nu/fmdev.XliffParser)
 
 To install XliffParser, run the following command in the Package Manager Console
 
