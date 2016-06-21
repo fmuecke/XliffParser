@@ -19,4 +19,5 @@ To install XliffParser, run the following command in the Package Manager Console
 
     Install-Package fmdev.XliffParser
 
+[![NuGet version](https://badge.fury.io/nu/fmdev.XliffParser.svg)](https://badge.fury.io/nu/fmdev.XliffParser)
 
