@@ -118,11 +118,23 @@ namespace xlflib
         }
 
         /// <summary>
-        ///
+        /// Uses "new" as the state for updated and new strings
         /// </summary>
         /// <param name="fileName"></param>
         /// <returns>Return the number of updated/added/removed items</returns>
         public Tuple<int, int, int> UpdateFromResX(string fileName)
+        {
+            return UpdateFromResX(fileName, "new", "new");
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="updatedResourceStateString"></param>
+        /// <param name="addedResourceStateString"></param>
+        /// <returns>Return the number of updated/added/removed items</returns>
+        public Tuple<int, int, int> UpdateFromResX(string fileName, string updatedResourceStateString, string addedResourceStateString)
         {
             var resxData = new Dictionary<string, Tuple<string, string>>(); // name, data, comment
             using (var resx = new ResXResourceReader(fileName))
@@ -154,7 +166,7 @@ namespace xlflib
                         {
                             // source text changed
                             u.Source = resxData[key].Item1;
-                            u.Optional.TargetState = "new";
+                            u.Optional.TargetState = updatedResourceStateString;
                             u.Optional.SetCommentFromResx(resxData[key].Item2);
 
                             ++updatedItems;
@@ -183,9 +195,9 @@ namespace xlflib
                 foreach (var d in resxData)
                 {
                     var unit = f.AddTransUnit(d.Key, d.Value.Item1, d.Value.Item1);
-                    unit.Optional.TargetState = "new";
+                    unit.Optional.TargetState = addedResourceStateString;
                     unit.Optional.SetCommentFromResx(d.Value.Item2);
-                    
+
                     ++addedItems;
                 }
             }
