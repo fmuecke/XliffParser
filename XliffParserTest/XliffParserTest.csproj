@@ -61,7 +61,7 @@
     <Compile Include="XlfTransUnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\XliffParser.csproj">
+    <ProjectReference Include="..\XliffParser\XliffParser.csproj">
       <Project>{6F0B5C8A-0F1C-462C-9B65-714A85342334}</Project>
       <Name>XliffParser</Name>
     </ProjectReference>

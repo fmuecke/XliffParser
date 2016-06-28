@@ -1,1 +1,1 @@
-nuget pack XliffParser.csproj -Properties Configuration=Release
+nuget pack XLiffParser\XliffParser.csproj -Properties Configuration=Release
