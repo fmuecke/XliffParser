@@ -1,6 +1,9 @@
 packages/
 .vs/
 *.suo
+*.nupkg
 bin/
 obj/
 publish/
+**/debug/
+**/release/
