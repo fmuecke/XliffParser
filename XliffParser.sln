@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XliffParser", "XliffParser\XliffParser.csproj", "{6F0B5C8A-0F1C-462C-9B65-714A85342334}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XliffParserTest", "XliffParserTest\XliffParserTest.csproj", "{8F109C7F-6D9A-4176-8DBC-792B897286A5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XliffParser.Test", "XliffParserTest\XliffParser.Test.csproj", "{8F109C7F-6D9A-4176-8DBC-792B897286A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XliffParser.Util", "XliffParser.Util\XliffParser.Util.csproj", "{A3AACD82-B2ED-408C-8A5F-5E45B375BE6F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{8F109C7F-6D9A-4176-8DBC-792B897286A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F109C7F-6D9A-4176-8DBC-792B897286A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F109C7F-6D9A-4176-8DBC-792B897286A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3AACD82-B2ED-408C-8A5F-5E45B375BE6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3AACD82-B2ED-408C-8A5F-5E45B375BE6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3AACD82-B2ED-408C-8A5F-5E45B375BE6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3AACD82-B2ED-408C-8A5F-5E45B375BE6F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace xlflib
+namespace XliffParser
 {
     /// <summary>
     ///  The <note> element is used to add localization-related comments to the XLIFF document. The content of <note>

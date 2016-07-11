@@ -1,4 +1,4 @@
-﻿namespace xlflib
+﻿namespace XliffParser
 {
     public class XlfState
     {

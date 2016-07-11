@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace xlflib
+namespace XliffParser
 {
     //tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="3.1.1250.0" tool-company="Microsoft"
     public class XlfTool

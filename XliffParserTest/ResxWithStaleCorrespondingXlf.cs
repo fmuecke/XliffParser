@@ -1,7 +1,7 @@
 using System;
-using XliffParserTest;
+using XliffParser.Test;
 
-namespace xlflib.Tests
+namespace XliffParser.Test
 {
     internal class ResxWithStaleCorrespondingXlf : TestSample
     {

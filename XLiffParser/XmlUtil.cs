@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace xlflib
+namespace XliffParser
 {
     public static class XmlUtil
     {

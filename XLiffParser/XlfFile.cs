@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Xml.Linq;
 
-namespace xlflib
+namespace XliffParser
 {
     public class XlfFile
     {

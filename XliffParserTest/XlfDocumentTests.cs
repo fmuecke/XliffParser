@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using XliffParserTest;
 
-namespace xlflib.Tests
+namespace XliffParser.Test
 {
     [TestClass()]
     public class XlfDocumentTests

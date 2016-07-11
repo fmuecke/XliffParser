@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using xlflib;
+using XliffParser;
 
-namespace xlflib.Tests
+namespace XliffParser.Test
 {
     [TestClass()]
     public class XlfTransUnitTests

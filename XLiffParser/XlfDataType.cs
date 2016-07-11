@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace xlflib
+namespace XliffParser
 {
     /// <summary>
     /// see http://docs.oasis-open.org/xliff/v1.2/os/xliff-core.html#datatype

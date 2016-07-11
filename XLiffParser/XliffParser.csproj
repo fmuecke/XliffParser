@@ -7,7 +7,7 @@
     <ProjectGuid>{6F0B5C8A-0F1C-462C-9B65-714A85342334}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>xlf</RootNamespace>
+    <RootNamespace>XliffParser</RootNamespace>
     <AssemblyName>fmdev.XliffParser</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
