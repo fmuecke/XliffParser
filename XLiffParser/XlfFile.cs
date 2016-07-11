@@ -28,12 +28,6 @@ namespace XliffParser
             SourceLang = sourceLang;
         }
 
-        public string Original
-        {
-            get { return this.node.Attribute("original").Value; }
-            private set { this.node.SetAttributeValue("original", value); }
-        }
-
         // xml, html etc.
         public string DataType
         {
@@ -41,15 +35,21 @@ namespace XliffParser
             private set { this.node.SetAttributeValue("datatype", value); }
         }
 
+        public XlfHeader Header { get; private set; }
+
+        public Optionals Optional { get; private set; }
+
+        public string Original
+        {
+            get { return this.node.Attribute("original").Value; }
+            private set { this.node.SetAttributeValue("original", value); }
+        }
+
         public string SourceLang
         {
             get { return this.node.Attribute("source-language").Value; }
             private set { this.node.SetAttributeValue("source-language", value); }
         }
-
-        public Optionals Optional { get; private set; }
-
-        public XlfHeader Header { get; private set; }
 
         public IEnumerable<XlfTransUnit> TransUnits
         {
@@ -118,16 +118,10 @@ namespace XliffParser
                 this.node = node;
             }
 
-            public string TargetLang
+            public string BuildNum
             {
-                get { return GetAttributeIfExists("target-language"); }
-                set { this.node.SetAttributeValue("target-language", value); }
-            }
-
-            public string ToolId
-            {
-                get { return GetAttributeIfExists("tool-id"); }
-                set { this.node.SetAttributeValue("tool-id", value); }
+                get { return GetAttributeIfExists("build-num"); }
+                set { this.node.SetAttributeValue("build-num", value); }
             }
 
             public string ProductName
@@ -142,10 +136,16 @@ namespace XliffParser
                 set { this.node.SetAttributeValue("product-version", value); }
             }
 
-            public string BuildNum
+            public string TargetLang
             {
-                get { return GetAttributeIfExists("build-num"); }
-                set { this.node.SetAttributeValue("build-num", value); }
+                get { return GetAttributeIfExists("target-language"); }
+                set { this.node.SetAttributeValue("target-language", value); }
+            }
+
+            public string ToolId
+            {
+                get { return GetAttributeIfExists("tool-id"); }
+                set { this.node.SetAttributeValue("tool-id", value); }
             }
 
             public string GetAttributeIfExists(string name)

@@ -8,10 +8,10 @@ namespace XliffParser
 {
     /// <summary>
     /// see http://docs.oasis-open.org/xliff/v1.2/os/xliff-core.html#datatype
-    /// 
+    ///
     /// Userdefined datatypes are allowed - but have to begin with "x-".
     /// </summary>
-    enum XlfDataType
+    internal enum XlfDataType
     {
         asp,  //     Indicates Active Server Page data.
         c,  // Indicates C source file data.

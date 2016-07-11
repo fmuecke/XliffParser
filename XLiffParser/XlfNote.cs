@@ -26,13 +26,13 @@ namespace XliffParser
             Optional = new Optionals(this.node);
         }
 
+        public Optionals Optional { get; }
+
         public string Value
         {
             get { return this.node.Value; }
             set { this.node.Value = value; }
         }
-
-        public Optionals Optional { get; }
 
         public XElement GetNode()
         {
@@ -49,12 +49,13 @@ namespace XliffParser
             }
 
             /// <summary>
-            /// Specifies the language of the note content.
+            /// Indicates if the note is a general note or, in the case of a <trans-unit>,
+            /// pertains specifically to the <source> or the <target> element.
             /// </summary>
-            public string Lang
+            public string Annotates
             {
-                get { return XmlUtil.GetAttributeIfExists(this.node, "xml:lang"); }
-                set { this.node.SetAttributeValue("xml:lang", value); }
+                get { return XmlUtil.GetAttributeIfExists(this.node, "annotates"); }
+                set { this.node.SetAttributeValue("annotates", value); }
             }
 
             /// <summary>
@@ -67,22 +68,21 @@ namespace XliffParser
             }
 
             /// <summary>
+            /// Specifies the language of the note content.
+            /// </summary>
+            public string Lang
+            {
+                get { return XmlUtil.GetAttributeIfExists(this.node, "xml:lang"); }
+                set { this.node.SetAttributeValue("xml:lang", value); }
+            }
+
+            /// <summary>
             /// Allows a priority from 1 (high) to 10 (low) to be assigned to the note.
             /// </summary>
             public int Priority
             {
                 get { return XmlUtil.GetIntAttributeIfExists(this.node, "priority"); }
                 set { this.node.SetAttributeValue("priority", value); }
-            }
-
-            /// <summary>
-            /// Indicates if the note is a general note or, in the case of a <trans-unit>,
-            /// pertains specifically to the <source> or the <target> element.
-            /// </summary>
-            public string Annotates
-            {
-                get { return XmlUtil.GetAttributeIfExists(this.node, "annotates"); }
-                set { this.node.SetAttributeValue("annotates", value); }
             }
         }
     }

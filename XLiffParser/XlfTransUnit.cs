@@ -32,6 +32,8 @@ namespace XliffParser
             private set { this.node.SetAttributeValue("id", value); }
         }
 
+        public Optionals Optional { get; }
+
         public string Source
         {
             get { return this.node.Element(this.ns + "source").Value; }
@@ -43,8 +45,6 @@ namespace XliffParser
             get { return this.node.Element(this.ns + "target").Value; }
             set { this.node.SetElementValue(this.ns + "target", value); }
         }
-
-        public Optionals Optional { get; }
 
         public class Optionals
         {
@@ -67,48 +67,23 @@ namespace XliffParser
             }
 
             /// <summary>
-            /// Indicates whether or not the text referred to should be translated.
-            /// </summary>
-            public string Translate
-            {
-                get { return XmlUtil.GetAttributeIfExists(this.node, "translate"); }
-                set { this.node.SetAttributeValue("translate", value); }
-            }
-
-            /// <summary>
-            /// The status of a particular translation in a <target> or <bin-target> element.
-            /// <see cref="http://docs.oasis-open.org/xliff/v1.2/os/xliff-core.html#state"/>
-            /// </summary>
-            public string TargetState
-            {
-                get
-                {
-                    return XmlUtil.GetAttributeIfExists(this.node.Element(this.ns + "target"), "state");
-                }
-                set
-                {
-                    this.node.Element(this.ns + "target").SetAttributeValue("state", value);
-                }
-            } // TODO later: use XlfState
-
-            /// <summary>
             /// The datatype attribute specifies the kind of text contained in the element. Depending on that type, you may
             /// apply different processes to the data. For example: datatype="winres" specifies that the content is Windows
             /// resources which would allow using the Win32 API in rendering the content.
+            // TODO later: use XlfDataType
             /// </summary>
             public string DataType
             {
                 get { return XmlUtil.GetAttributeIfExists(this.node, "datatype"); }
                 set { this.node.SetAttributeValue("datatype", value); }
-            } // TODO later: use XlfDataType
+            }
 
-            /// <summary>
-            ///  Indicates the resource type of the container element.
-            /// </summary>
-            public string Restype
+            public IEnumerable<XlfNote> Notes
             {
-                get { return XmlUtil.GetAttributeIfExists(this.node, "restype"); }
-                set { this.node.SetAttributeValue("restype", value); }
+                get
+                {
+                    return this.node.Descendants(this.ns + "note").Select(t => new XlfNote(t));
+                }
             }
 
             /// <summary>
@@ -121,12 +96,39 @@ namespace XliffParser
                 set { this.node.SetAttributeValue("resname", value); }
             }
 
-            public IEnumerable<XlfNote> Notes
+            /// <summary>
+            ///  Indicates the resource type of the container element.
+            /// </summary>
+            public string Restype
+            {
+                get { return XmlUtil.GetAttributeIfExists(this.node, "restype"); }
+                set { this.node.SetAttributeValue("restype", value); }
+            }
+
+            /// <summary>
+            /// The status of a particular translation in a <target> or <bin-target> element.
+            /// <see cref="http://docs.oasis-open.org/xliff/v1.2/os/xliff-core.html#state"/>
+            /// TODO later: use XlfState
+            /// </summary>
+            public string TargetState
             {
                 get
                 {
-                    return this.node.Descendants(this.ns + "note").Select(t => new XlfNote(t));
+                    return XmlUtil.GetAttributeIfExists(this.node.Element(this.ns + "target"), "state");
                 }
+                set
+                {
+                    this.node.Element(this.ns + "target").SetAttributeValue("state", value);
+                }
+            }
+
+            /// <summary>
+            /// Indicates whether or not the text referred to should be translated.
+            /// </summary>
+            public string Translate
+            {
+                get { return XmlUtil.GetAttributeIfExists(this.node, "translate"); }
+                set { this.node.SetAttributeValue("translate", value); }
             }
 
             public void AddNote(string comment, string from)

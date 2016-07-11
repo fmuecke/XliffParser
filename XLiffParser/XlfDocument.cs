@@ -27,12 +27,6 @@ namespace XliffParser
         public string FileName
         { get; }
 
-        public string Version
-        {
-            get { return this.doc.Root.Attribute("version").Value; }
-            set { this.doc.Root.SetAttributeValue("version", value); }
-        }
-
         public IEnumerable<XlfFile> Files
         {
             get
@@ -40,6 +34,12 @@ namespace XliffParser
                 var ns = this.doc.Root.Name.Namespace;
                 return this.doc.Descendants(ns + "file").Select(f => new XlfFile(f, ns));
             }
+        }
+
+        public string Version
+        {
+            get { return this.doc.Root.Attribute("version").Value; }
+            set { this.doc.Root.SetAttributeValue("version", value); }
         }
 
         public XlfFile AddFile(string original, string dataType, string sourceLang)

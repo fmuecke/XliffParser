@@ -16,7 +16,8 @@
             Translated,             // Indicates that the item has been translated.
         }
 
-        bool IsUserDefined {
+        private bool IsUserDefined
+        {
             get;
         }
     }
