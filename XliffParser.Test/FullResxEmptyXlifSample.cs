@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace XliffParser.Test
 {
-    class ResxWithEmptyCorrespondingXlf : TestSample
+    internal class ResxWithEmptyCorrespondingXlf : TestSample
     {
         public override string ResxContents =>
 @"<?xml version=""1.0"" encoding=""utf-8""?>

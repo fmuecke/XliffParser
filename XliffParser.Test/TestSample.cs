@@ -3,19 +3,9 @@ using System.IO;
 
 namespace XliffParser.Test
 {
-    internal abstract class TestSample: IDisposable
+    internal abstract class TestSample : IDisposable
     {
-        protected static readonly string RootTestPath = Path.GetTempPath() +  "XlifParserTempTestData";
-
-        protected Guid SampleGuid { get; }
-
-        public abstract string ResxContents { get; }
-
-        public abstract string XlfContents { get; }
-
-        public string ResxFileName { get; }
-
-        public string XlfFileName { get; }
+        protected static readonly string RootTestPath = Path.GetTempPath() + "XlifParserTempTestData";
 
         protected TestSample()
         {
@@ -33,7 +23,16 @@ namespace XliffParser.Test
             File.WriteAllText(XlfFileName, XlfContents);
         }
 
-        ~TestSample() { Dispose(false); }
+        ~TestSample()
+        {
+            Dispose(false);
+        }
+
+        public abstract string ResxContents { get; }
+        public string ResxFileName { get; }
+        public abstract string XlfContents { get; }
+        public string XlfFileName { get; }
+        protected Guid SampleGuid { get; }
 
         public void Dispose()
         {
