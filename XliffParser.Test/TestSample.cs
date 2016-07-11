@@ -1,8 +1,8 @@
-﻿using System;
-using System.IO;
-
-namespace XliffParser.Test
+﻿namespace XliffParser.Test
 {
+    using System;
+    using System.IO;
+
     internal abstract class TestSample : IDisposable
     {
         protected static readonly string RootTestPath = Path.GetTempPath() + "XlifParserTempTestData";
@@ -27,10 +27,8 @@ namespace XliffParser.Test
             Dispose(false);
         }
 
-        //public abstract string ResxContents { get; }
         public string ResxFileName { get; }
 
-        //public abstract string XlfContents { get; }
         public string XlfFileName { get; }
 
         protected Guid SampleGuid { get; }

@@ -1,8 +1,8 @@
-using System;
-using XliffParser.Test;
-
 namespace XliffParser.Test
 {
+    using System;
+    using XliffParser.Test;
+
     internal class ResxWithStaleCorrespondingXlf : TestSample
     {
         private static readonly string ResxContent =
@@ -104,6 +104,7 @@ namespace XliffParser.Test
 
         public ResxWithStaleCorrespondingXlf()
             : base(ResxContent, XlfContent)
-        { }
+        {
+        }
     }
 }

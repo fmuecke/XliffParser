@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-
-namespace XliffParser
+﻿namespace XliffParser
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Xml.Linq;
+
     /// <summary>
     ///  The <note> element is used to add localization-related comments to the XLIFF document. The content of <note>
     ///  may be instructions from developers about how to handle the <source>, comments from the translator about the

@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Xml.Linq;
-
-namespace XliffParser
+﻿namespace XliffParser
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Xml.Linq;
+
     public class XlfTransUnit
     {
         private XElement node;
@@ -70,7 +70,7 @@ namespace XliffParser
             /// The datatype attribute specifies the kind of text contained in the element. Depending on that type, you may
             /// apply different processes to the data. For example: datatype="winres" specifies that the content is Windows
             /// resources which would allow using the Win32 API in rendering the content.
-            // TODO later: use XlfDataType
+            /// TODO later: use XlfDataType
             /// </summary>
             public string DataType
             {
@@ -116,6 +116,7 @@ namespace XliffParser
                 {
                     return XmlUtil.GetAttributeIfExists(this.node.Element(this.ns + "target"), "state");
                 }
+
                 set
                 {
                     this.node.Element(this.ns + "target").SetAttributeValue("state", value);
@@ -138,6 +139,7 @@ namespace XliffParser
                 {
                     note.Optional.From = from;
                 }
+
                 this.node.Add(note.GetNode());
             }
 

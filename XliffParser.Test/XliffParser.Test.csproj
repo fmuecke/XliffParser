@@ -55,7 +55,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="FullResxEmptyXlifSample.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="ResxWithEmptyCorrespondingXlf.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResxWithStaleCorrespondingXlf.cs" />
     <Compile Include="TestSample.cs" />
@@ -67,6 +68,14 @@
       <Project>{6F0B5C8A-0F1C-462C-9B65-714A85342334}</Project>
       <Name>XliffParser</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\Newtonsoft.Json.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.0\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

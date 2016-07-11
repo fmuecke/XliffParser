@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Resources;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-
-namespace XliffParser
+﻿namespace XliffParser
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.Design;
+    using System.Linq;
+    using System.Resources;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Xml.Linq;
+
     public class XlfDocument
     {
         private XDocument doc;
@@ -95,6 +95,7 @@ namespace XliffParser
                         {
                             node.Comment = u.Optional.Notes.First().Value.Replace("\n", Environment.NewLine);
                         }
+
                         nodes.Add(node);
                     }
                 }
@@ -103,10 +104,22 @@ namespace XliffParser
                 {
                     nodes.Sort((x, y) =>
                     {
-                        if (x.Name == null && y.Name == null) return 0;
-                        else if (x.Name == null) return -1;
-                        else if (y.Name == null) return 1;
-                        else return x.Name.CompareTo(y.Name);
+                        if (x.Name == null && y.Name == null)
+                        {
+                            return 0;
+                        }
+                        else if (x.Name == null)
+                        {
+                            return -1;
+                        }
+                        else if (y.Name == null)
+                        {
+                            return 1;
+                        }
+                        else
+                        {
+                            return x.Name.CompareTo(y.Name);
+                        }
                     });
                 }
 
@@ -176,6 +189,7 @@ namespace XliffParser
                     {
                         removedUnits.Add(u);
                     }
+
                     resxData.Remove(key);
                 }
 
@@ -189,6 +203,7 @@ namespace XliffParser
                     {
                         f.RemoveTransUnitByResname(u.Optional.Resname);
                     }
+
                     ++removedItems;
                 }
 

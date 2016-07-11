@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace XliffParser.Test
+﻿namespace XliffParser.Test
 {
-    [TestClass()]
+    using System.Collections.Generic;
+    using System.Linq;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+    [TestClass]
     public class XlfDocumentTests
     {
-        [TestMethod()]
+        [TestMethod]
         public void UpdateEmptyXlfFromResx()
         {
             using (var sample = new ResxWithEmptyCorrespondingXlf())
@@ -30,7 +30,7 @@ namespace XliffParser.Test
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void UpdateStaleXlfFromResx()
         {
             using (var sample = new ResxWithStaleCorrespondingXlf())
@@ -53,7 +53,7 @@ namespace XliffParser.Test
             }
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void UpdateStaleXlfFromResxWithCustomStateStrings()
         {
             using (var sample = new ResxWithStaleCorrespondingXlf())

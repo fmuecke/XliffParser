@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using XliffParser;
-
-namespace XliffParser.Test
+﻿namespace XliffParser.Test
 {
-    [TestClass()]
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Xml.Linq;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using XliffParser;
+
+    [TestClass]
     public class XlfTransUnitTests
     {
         private static string xlf11doc =
@@ -170,25 +170,25 @@ namespace XliffParser.Test
             "  </file>" +
             "</xliff>";
 
-        [TestMethod()]
+        [TestMethod]
         public void AddNoteTest()
         {
             var doc = XDocument.Parse(xlf12doc);
             var ns = doc.Root.Name.Namespace;
             var unit = new XlfTransUnit(doc.Descendants(ns + "trans-unit").First(), ns);
             unit.Optional.AddNote("Valar morghulis!", "XliffParserTest");
-            var isWithNote = doc.ToString().Replace(" ", "").Contains("</target><notefrom=\"XliffParserTest\">Valarmorghulis!</note></trans-unit>\r\n<trans-unit");
+            var isWithNote = doc.ToString().Replace(" ", string.Empty).Contains("</target><notefrom=\"XliffParserTest\">Valarmorghulis!</note></trans-unit>\r\n<trans-unit");
             Assert.IsTrue(isWithNote);
 
             doc = XDocument.Parse(xlf11doc);
             ns = doc.Root.Name.Namespace;
             unit = new XlfTransUnit(doc.Descendants(ns + "trans-unit").First(), ns);
             unit.Optional.AddNote("Valar morghulis!", "XliffParserTest");
-            isWithNote = doc.ToString().Replace(" ", "").Contains("</rwt:historylist>\r\n<notefrom=\"XliffParserTest\">Valarmorghulis!</note>\r\n</trans-unit>\r\n<trans-unit");
+            isWithNote = doc.ToString().Replace(" ", string.Empty).Contains("</rwt:historylist>\r\n<notefrom=\"XliffParserTest\">Valarmorghulis!</note>\r\n</trans-unit>\r\n<trans-unit");
             Assert.IsTrue(isWithNote);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void RemoveNoteTest()
         {
             Assert.Fail();

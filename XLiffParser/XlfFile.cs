@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Xml.Linq;
-
-namespace XliffParser
+﻿namespace XliffParser
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Xml.Linq;
+
     public class XlfFile
     {
         private XElement node;
