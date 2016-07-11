@@ -5,8 +5,8 @@ namespace XliffParser.Test
 {
     internal class ResxWithStaleCorrespondingXlf : TestSample
     {
-        public override string ResxContents =>
-@"<?xml version=""1.0"" encoding=""utf-8""?>
+        private static readonly string ResxContent =
+        @"<?xml version=""1.0"" encoding=""utf-8""?>
 <root>
   <xsd:schema id=""root"" xmlns="""" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:msdata=""urn:schemas-microsoft-com:xml-msdata"">
     <xsd:element name=""root"" msdata:IsDataSet=""true"">
@@ -74,7 +74,7 @@ namespace XliffParser.Test
   </data>
 </root>";
 
-        public override string XlfContents =>
+        private static readonly string XlfContent =
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <xliff version=""1.2"">
  <file original=""Strings.resx""
@@ -101,5 +101,9 @@ namespace XliffParser.Test
   </body>
  </file>
 </xliff>";
+
+        public ResxWithStaleCorrespondingXlf()
+            : base(ResxContent, XlfContent)
+        { }
     }
 }

@@ -7,7 +7,7 @@ namespace XliffParser.Test
     {
         protected static readonly string RootTestPath = Path.GetTempPath() + "XlifParserTempTestData";
 
-        protected TestSample()
+        protected TestSample(string resxContent, string xlfContent)
         {
             SampleGuid = Guid.NewGuid();
 
@@ -17,10 +17,9 @@ namespace XliffParser.Test
             }
 
             ResxFileName = Path.Combine(Path.GetTempPath(), RootTestPath, "Resx_" + SampleGuid);
-            File.WriteAllText(ResxFileName, ResxContents);
-
+            File.WriteAllText(ResxFileName, resxContent);
             XlfFileName = Path.Combine(Path.GetTempPath(), RootTestPath, "Xlf_" + SampleGuid);
-            File.WriteAllText(XlfFileName, XlfContents);
+            File.WriteAllText(XlfFileName, xlfContent);
         }
 
         ~TestSample()
@@ -28,10 +27,12 @@ namespace XliffParser.Test
             Dispose(false);
         }
 
-        public abstract string ResxContents { get; }
+        //public abstract string ResxContents { get; }
         public string ResxFileName { get; }
-        public abstract string XlfContents { get; }
+
+        //public abstract string XlfContents { get; }
         public string XlfFileName { get; }
+
         protected Guid SampleGuid { get; }
 
         public void Dispose()

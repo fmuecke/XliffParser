@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,8 +9,8 @@ namespace XliffParser.Test
 {
     internal class ResxWithEmptyCorrespondingXlf : TestSample
     {
-        public override string ResxContents =>
-@"<?xml version=""1.0"" encoding=""utf-8""?>
+        private static readonly string ResxContent =
+        @"<?xml version=""1.0"" encoding=""utf-8""?>
 <root>
   <xsd:schema id=""root"" xmlns="""" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:msdata=""urn:schemas-microsoft-com:xml-msdata"">
     <xsd:element name=""root"" msdata:IsDataSet=""true"">
@@ -77,7 +78,7 @@ namespace XliffParser.Test
   </data>
 </root>";
 
-        public override string XlfContents =>
+        private static readonly string XlfContent =
 @"<?xml version=""1.0"" encoding=""utf-8""?>
 <xliff version=""1.2"" xmlns=""urn:oasis:names:tc:xliff:document:1.2"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xsi:schemaLocation=""urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd"">
   <file datatype=""xml"" source-language=""en"" target-language=""it"" original=""Strings.resx"">
@@ -86,5 +87,10 @@ namespace XliffParser.Test
     </body>
   </file>
 </xliff>";
+
+        public ResxWithEmptyCorrespondingXlf()
+            : base(ResxContent, XlfContent)
+        {
+        }
     }
 }
