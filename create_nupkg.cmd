@@ -1,2 +1,2 @@
-nuget pack XLiffParser\XliffParser.csproj -Properties Configuration=Release
-nuget pack XLiffParser.Tool\XliffParser.Tool.csproj -Properties Configuration=Release
+nuget pack XLiffParser\XliffParser.csproj -Build -Symbols -Properties Configuration=Release
+nuget pack XLiffParser.Tool\XliffParser.Tool.csproj -Build -Symbols -Properties Configuration=Release -Tool -IncludeReferencedProjects

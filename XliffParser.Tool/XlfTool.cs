@@ -1,12 +1,9 @@
-﻿namespace XliffParser
+﻿namespace XliffParser.Tool
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-    using CommandLine;
+    using FMDev.ArgsParser;
 
     internal class XlfTool
     {
@@ -14,12 +11,30 @@
         {
             try
             {
-                return CommandLine.Parser.Default.ParseArguments<DefaultOptions, WriteOptions, UpdateOptions>(args)
-                    .MapResult(
-                    (DefaultOptions o) => RunDefault(o),
-                    (WriteOptions o) => RunWrite(o),
-                    (UpdateOptions o) => RunUpdate(o),
-                    errs => 1);
+                var parser = new ArgsParser(CommandLineOptions.Create());
+                if (parser.Parse(args))
+                {
+                    if (parser.Result is CommandLineOptions.InfoCommand)
+                    {
+                        return RunDefault(parser.Result as CommandLineOptions.InfoCommand);
+                    }
+
+                    if (parser.Result is CommandLineOptions.UpdateCommand)
+                    {
+                        return RunUpdate(parser.Result as CommandLineOptions.UpdateCommand);
+                    }
+
+                    if (parser.Result is CommandLineOptions.WriteTargetCommand)
+                    {
+                        return RunWrite(parser.Result as CommandLineOptions.WriteTargetCommand);
+                    }
+                    else
+                    {
+                        parser.PrintUsage();
+                    }
+
+                    return 0;
+                }
             }
             catch (Exception e)
             {
@@ -27,15 +42,16 @@
                 // - file not found
                 // - invalid resource file
                 // - etc.
-                Console.Error.WriteLine(e.Message);
+                Console.Error.WriteLine("ERROR: " + e.Message + "\n");
             }
 
             return 1;
         }
 
-        private static int RunDefault(DefaultOptions o)
+        private static int RunDefault(CommandLineOptions.InfoCommand cmd)
         {
-            var doc = new XliffParser.XlfDocument(o.XlfFile);
+            var xlfFile = cmd.Xlf;
+            var doc = new XliffParser.XlfDocument(xlfFile);
             Console.WriteLine("file: " + doc.FileName);
             Console.WriteLine("XLIFF version: " + doc.Version);
             Console.WriteLine("file sections: " + doc.Files.Count());
@@ -53,28 +69,31 @@
             return 0;
         }
 
-        private static int RunUpdate(UpdateOptions o)
+        private static int RunUpdate(CommandLineOptions.UpdateCommand cmd)
         {
-            if (!File.Exists(o.XlfFile))
+            var xlfFile = cmd.Xlf;
+            var resxFile = cmd.Resx;
+
+            if (!File.Exists(xlfFile))
             {
-                Console.Error.WriteLine("error, file not found: " + o.XlfFile);
+                Console.Error.WriteLine("error, file not found: " + xlfFile);
                 return 2;
             }
 
-            var doc = new XliffParser.XlfDocument(o.XlfFile);
-            if (string.IsNullOrWhiteSpace(o.ResXFile))
+            var doc = new XliffParser.XlfDocument(xlfFile);
+            if (string.IsNullOrWhiteSpace(resxFile))
             {
-                o.ResXFile = Path.Combine(Path.GetDirectoryName(o.XlfFile), doc.Files.First().Original);
+                resxFile = Path.Combine(Path.GetDirectoryName(xlfFile), doc.Files.First().Original);
             }
 
-            if (!File.Exists(o.ResXFile))
+            if (!File.Exists(resxFile))
             {
-                Console.Error.WriteLine("error, file not found: " + o.ResXFile);
+                Console.Error.WriteLine("error, file not found: " + resxFile);
                 return 2;
             }
 
-            var result = doc.UpdateFromResX(o.ResXFile);
-            if (o.IsVerbose)
+            var result = doc.UpdateFromResX(resxFile);
+            if (cmd.Verbose)
             {
                 var msg = string.Empty;
                 if (result.Item1 == 0 && result.Item2 == 0 && result.Item3 == 0)
@@ -116,47 +135,11 @@
             return 0;
         }
 
-        private static int RunWrite(WriteOptions o)
+        private static int RunWrite(CommandLineOptions.WriteTargetCommand cmd)
         {
-            var doc = new XliffParser.XlfDocument(o.XlfFile);
-            doc.SaveAsResX(o.ResXFile, o.IsSorted ? XliffParser.XlfDocument.SaveMode.Sorted : XliffParser.XlfDocument.SaveMode.Default);
+            var doc = new XliffParser.XlfDocument(cmd.Xlf);
+            doc.SaveAsResX(cmd.Resx, new XlfDocument.ResXSaveMode() { DoSort = cmd.Sorted, DoIncludeComments = cmd.IncludeComments });
             return 0;
-        }
-
-        [Verb("info", HelpText = "Retrieves xlf file information.")]
-        private class DefaultOptions
-        {
-            [Option('x', "xlf", Required = true, HelpText = "xlf input file")]
-            public string XlfFile { get; set; }
-        }
-
-        [Verb("update", HelpText = "Update XLF translation data from specified .resx input file.")]
-        private class UpdateOptions
-        {
-            [Option('v', "verbose", HelpText = "dispay additional information")]
-            public bool IsVerbose { get; set; }
-
-            [Option('r', "resx", HelpText = "resx source file")]
-            public string ResXFile { get; set; }
-
-            [Option('x', "xlf", Required = true, HelpText = "xlf file to be updated")]
-            public string XlfFile { get; set; }
-
-            ////[Option('s', "sorted", HelpText = "sort data alphabetically by name")]
-            ////public bool IsSorted { get; set; }
-        }
-
-        [Verb("write-target", HelpText = "Write XLF translation data to specified .resx output file.")]
-        private class WriteOptions
-        {
-            [Option('s', "sorted", HelpText = "sort data alphabetically by name")]
-            public bool IsSorted { get; set; }
-
-            [Option('r', "resx", Required = true, HelpText = "output file")]
-            public string ResXFile { get; set; }
-
-            [Option('x', "xlf", Required = true, HelpText = "xlf input file")]
-            public string XlfFile { get; set; }
         }
     }
 }

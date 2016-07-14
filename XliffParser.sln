@@ -7,13 +7,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XliffParser", "XliffParser\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XliffParser.Test", "XliffParser.Test\XliffParser.Test.csproj", "{8F109C7F-6D9A-4176-8DBC-792B897286A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XliffParser.Tool", "XliffParser.Tool\XliffParser.Tool.csproj", "{A3AACD82-B2ED-408C-8A5F-5E45B375BE6F}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{306FAD19-B466-4C80-9D8E-EAC54D808940}"
 	ProjectSection(SolutionItems) = preProject
+		create_nupkg.cmd = create_nupkg.cmd
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XliffParser.Tool", "XliffParser.Tool\XliffParser.Tool.csproj", "{A3AACD82-B2ED-408C-8A5F-5E45B375BE6F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
