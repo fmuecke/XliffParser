@@ -191,7 +191,14 @@
         [TestMethod]
         public void RemoveNoteTest()
         {
-            Assert.Fail();
+            var doc = XDocument.Parse(xlf12doc);
+            var ns = doc.Root.Name.Namespace;
+            var unit = new XlfTransUnit(doc.Descendants(ns + "trans-unit").Where(d => d.Attribute("id").Value == "Resx/State_translated_withNotes").First(), ns);
+            var noteCountBefore = unit.Optional.Notes.Count(n => n.Optional.From == "MultilingualEditor");
+            Assert.AreNotEqual(0, noteCountBefore, "There must be at least one note of type 'MultilingualEditor' for this test to work");
+            unit.Optional.RemoveNotes("from", "MultilingualEditor");
+            var noteCountAfter = unit.Optional.Notes.Count(n => n.Optional.From == "MultilingualEditor");
+            Assert.AreEqual(0, noteCountAfter, "There must not be any notes from 'MultilingualEditor' after removal");
         }
     }
 }

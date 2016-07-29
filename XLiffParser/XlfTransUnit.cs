@@ -160,7 +160,7 @@
                 }
             }
 
-            private void RemoveNote(string attributeName, string value)
+            public void RemoveNotes(string attributeName, string value)
             {
                 this.node.Descendants(this.ns + "note").Where(u =>
                 {
