@@ -19,11 +19,6 @@
             doc = XDocument.Load(FileName);
         }
 
-        public enum SaveMode
-        {
-            Default, Sorted
-        }
-
         public string FileName
         { get; }
 
@@ -68,10 +63,10 @@
 
         public void SaveAsResX(string fileName)
         {
-            SaveAsResX(fileName, SaveMode.Default);
+            SaveAsResX(fileName, new ResXSaveMode());
         }
 
-        public void SaveAsResX(string fileName, SaveMode mode)
+        public void SaveAsResX(string fileName, ResXSaveMode mode)
         {
             using (var resx = new ResXResourceWriter(fileName))
             {
@@ -91,7 +86,7 @@
                         }
 
                         var node = new ResXDataNode(id, u.Target.Replace("\n", Environment.NewLine));
-                        if (u.Optional.Notes.Count() > 0)
+                        if (u.Optional.Notes.Count() > 0 && mode.DoIncludeComments)
                         {
                             node.Comment = u.Optional.Notes.First().Value.Replace("\n", Environment.NewLine);
                         }
@@ -100,7 +95,7 @@
                     }
                 }
 
-                if (mode == SaveMode.Sorted)
+                if (mode.DoSort)
                 {
                     nodes.Sort((x, y) =>
                     {
@@ -218,6 +213,17 @@
             }
 
             return Tuple.Create(updatedItems, addedItems, removedItems);
+        }
+
+        public class ResXSaveMode
+        {
+            public ResXSaveMode()
+            {
+            }
+
+            public bool DoSort { get; set; } = false;
+
+            public bool DoIncludeComments { get; set; } = false;
         }
     }
 }
