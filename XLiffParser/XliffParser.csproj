@@ -44,6 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="ResXItemData.cs" />
+    <Compile Include="UpdateResult.cs" />
     <Compile Include="XlfDataType.cs" />
     <Compile Include="XlfDocument.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

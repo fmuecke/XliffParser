@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.Design;
+    using System.IO;
     using System.Linq;
     using System.Resources;
     using System.Text;
@@ -125,27 +126,29 @@
             }
         }
 
-        /// <summary>
-        /// Uses "new" as the state for updated and new strings
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <returns>Return the number of updated/added/removed items</returns>
-        public Tuple<int, int, int> UpdateFromResX(string fileName)
+        public UpdateResult UpdateFromSource(string updatedResourceStateString, string addedResourceStateString)
         {
-            return UpdateFromResX(fileName, "new", "new");
+            var sourceFile = Path.Combine(Path.GetDirectoryName(this.FileName), Files.Single().Original);
+            return Update(sourceFile, updatedResourceStateString, addedResourceStateString);
         }
 
         /// <summary>
-        ///
+        /// Updates the xlf data from the resx source file.
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="updatedResourceStateString"></param>
-        /// <param name="addedResourceStateString"></param>
+        /// <param name="sourceFile">The source file to be processed.</param>
+        /// <param name="updatedResourceStateString">The state string that should be used for updated items.</param>
+        /// <param name="addedResourceStateString">The state string that should be used for added items.</param>
         /// <returns>Return the number of updated/added/removed items</returns>
-        public Tuple<int, int, int> UpdateFromResX(string fileName, string updatedResourceStateString, string addedResourceStateString)
+        public Tuple<int, int, int> UpdateFromSource(string sourceFile, string updatedResourceStateString, string addedResourceStateString)
         {
-            var resxData = new Dictionary<string, Tuple<string, string>>(); // name, data, comment
-            using (var resx = new ResXResourceReader(fileName))
+            var result = Update(sourceFile, updatedResourceStateString, addedResourceStateString);
+            return Tuple.Create(result.UpdatedItems.Count(), result.AddedItems.Count(), result.RemovedItems.Count());
+        }
+
+        private UpdateResult Update(string sourceFile, string updatedResourceStateString, string addedResourceStateString)
+        {
+            var resxData = new Dictionary<string, ResXItemData>(); // name, value, comment
+            using (var resx = new ResXResourceReader(sourceFile))
             {
                 resx.UseResXDataNodes = true;
                 var dict = resx.GetEnumerator();
@@ -153,66 +156,70 @@
                 {
                     var item = dict.Value as ResXDataNode;
                     var value = item.GetValue((ITypeResolutionService)null) as string;
-                    resxData.Add(
-                        dict.Key as string,
-                        Tuple.Create(value, item.Comment));
+                    var itemData = new ResXItemData() { Value = value, Comment = item.Comment };
+
+                    if (Files.Single().Optional.ToolId == "MultilingualAppToolkit")
+                    {
+                        resxData.Add("Resx/" + dict.Key as string, itemData);
+                    }
+                    else
+                    {
+                        resxData.Add(dict.Key as string, itemData);
+                    }
                 }
             }
 
-            int updatedItems = 0;
-            int addedItems = 0;
-            int removedItems = 0;
+            var updatedItems = new List<string>();
+            var addedItems = new List<string>();
+            var removedItems = new List<string>();
             foreach (var f in Files)
             {
-                var removedUnits = new List<XlfTransUnit>();
                 foreach (var u in f.TransUnits)
                 {
                     var key = u.Optional.Resname.Length > 0 ? u.Optional.Resname : u.Id;
                     if (resxData.ContainsKey(key))
                     {
-                        if (XmlUtil.NormalizeLineBreaks(u.Source) != XmlUtil.NormalizeLineBreaks(resxData[key].Item1))
+                        if (XmlUtil.NormalizeLineBreaks(u.Source) != XmlUtil.NormalizeLineBreaks(resxData[key].Value))
                         {
                             // source text changed
-                            u.Source = resxData[key].Item1;
+                            u.Source = resxData[key].Value;
                             u.Optional.TargetState = updatedResourceStateString;
-                            u.Optional.SetCommentFromResx(resxData[key].Item2);
+                            u.Optional.SetCommentFromResx(resxData[key].Comment);
 
-                            ++updatedItems;
+                            updatedItems.Add(key);
                         }
                     }
                     else
                     {
-                        removedUnits.Add(u);
+                        removedItems.Add(key);
                     }
 
                     resxData.Remove(key);
                 }
 
-                foreach (var u in removedUnits)
+                foreach (var id in removedItems)
                 {
-                    if (string.IsNullOrWhiteSpace(u.Optional.Resname))
+                    if (Version == "1.1")
                     {
-                        f.RemoveTransUnitById(u.Id);
-                    }
-                    else
-                    {
-                        f.RemoveTransUnitByResname(u.Optional.Resname);
+                        // RC-Wintrans
+                        f.RemoveTransUnitByResname(id);
                     }
 
-                    ++removedItems;
+                    // all others
+                    f.RemoveTransUnitById(id);
                 }
 
                 foreach (var d in resxData)
                 {
-                    var unit = f.AddTransUnit(d.Key, d.Value.Item1, d.Value.Item1);
+                    var unit = f.AddTransUnit(d.Key, d.Value.Value, d.Value.Value);
                     unit.Optional.TargetState = addedResourceStateString;
-                    unit.Optional.SetCommentFromResx(d.Value.Item2);
+                    unit.Optional.SetCommentFromResx(d.Value.Comment);
 
-                    ++addedItems;
+                    addedItems.Add(d.Key);
                 }
             }
 
-            return Tuple.Create(updatedItems, addedItems, removedItems);
+            return new UpdateResult(addedItems, removedItems, updatedItems);
         }
 
         public class ResXSaveMode
