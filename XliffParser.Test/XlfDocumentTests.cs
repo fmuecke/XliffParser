@@ -13,11 +13,11 @@
             using (var sample = new ResxWithEmptyCorrespondingXlf())
             {
                 var xlfDocument = new XlfDocument(sample.XlfFileName);
-                var updateResult = xlfDocument.UpdateFromResX(sample.ResxFileName);
+                var updateResult = xlfDocument.UpdateFromSource("new", "new");
 
-                Assert.AreEqual(0, updateResult.Item1);
-                Assert.AreEqual(4, updateResult.Item2);
-                Assert.AreEqual(0, updateResult.Item3);
+                Assert.AreEqual(0, updateResult.AddedItems.Count());
+                Assert.AreEqual(4, updateResult.RemovedItems.Count());
+                Assert.AreEqual(0, updateResult.UpdatedItems.Count());
 
                 var xlfTransUnits = xlfDocument.Files.SelectMany(f => f.TransUnits).ToDictionary(tu => tu.Id, tu => tu);
 
@@ -36,11 +36,11 @@
             using (var sample = new ResxWithStaleCorrespondingXlf())
             {
                 var xlfDocument = new XlfDocument(sample.XlfFileName);
-                var updateResult = xlfDocument.UpdateFromResX(sample.ResxFileName);
+                var updateResult = xlfDocument.UpdateFromSource("new", "new");
 
-                Assert.AreEqual(2, updateResult.Item1);
-                Assert.AreEqual(1, updateResult.Item2);
-                Assert.AreEqual(1, updateResult.Item3);
+                Assert.AreEqual(2, updateResult.AddedItems.Count());
+                Assert.AreEqual(1, updateResult.RemovedItems.Count());
+                Assert.AreEqual(1, updateResult.UpdatedItems.Count());
 
                 var xlfTransUnits = xlfDocument.Files.SelectMany(f => f.TransUnits).ToDictionary(tu => tu.Id, tu => tu);
 
@@ -59,7 +59,7 @@
             using (var sample = new ResxWithStaleCorrespondingXlf())
             {
                 var xlfDocument = new XlfDocument(sample.XlfFileName);
-                var updateResult = xlfDocument.UpdateFromResX(sample.ResxFileName, "foo", "bar");
+                var updateResult = xlfDocument.UpdateFromSource(sample.ResxFileName, "foo", "bar");
 
                 Assert.AreEqual(2, updateResult.Item1);
                 Assert.AreEqual(1, updateResult.Item2);

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>FMDev.XlfTool</id>
+    <id>fmdev.xlftool</id>
     <version>$version$</version>
     <title>$title$</title>
     <authors>$author$</authors>
@@ -14,7 +14,7 @@
     <copyright>Copyright © 2016  Florian Mücke</copyright>
     <tags>XLF XLIFF Resx translation conversion</tags>
     <dependencies>
-      <dependency id="FMDev.ArgsParser" version="0.1" />
+      <dependency id="fmdev.ArgsParser" version="0.1.2" />
     </dependencies>
   </metadata>
 </package>

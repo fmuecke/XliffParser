@@ -3,7 +3,7 @@
     using System;
     using System.IO;
     using System.Linq;
-    using FMDev.ArgsParser;
+    using fmdev.ArgsParser;
 
     internal class XlfTool
     {
@@ -92,39 +92,43 @@
                 return 2;
             }
 
-            var result = doc.UpdateFromResX(resxFile);
+            var result = doc.UpdateFromSource("new", "new");
             if (cmd.Verbose)
             {
                 var msg = string.Empty;
-                if (result.Item1 == 0 && result.Item2 == 0 && result.Item3 == 0)
+                if (!result.Any())
                 {
                     msg = "already up-to-date";
                 }
                 else
                 {
-                    if (result.Item1 > 0)
+                    var updated = result.UpdatedItems.Count();
+                    var added = result.AddedItems.Count();
+                    var removed = result.RemovedItems.Count();
+
+                    if (updated > 0)
                     {
-                        msg += string.Format("{0} item{1} updated", result.Item1, result.Item1 == 1 ? string.Empty : "s");
+                        msg += updated == 1 ? "1 item updated" : $"{updated} items updated";
                     }
 
-                    if (result.Item2 > 0)
+                    if (added > 0)
                     {
                         if (msg.Length > 0)
                         {
                             msg += "/";
                         }
 
-                        msg += string.Format("{0} item{1} added", result.Item2, result.Item2 == 1 ? string.Empty : "s");
+                        msg += added == 1 ? "1 item added" : $"{added} items added";
                     }
 
-                    if (result.Item3 > 0)
+                    if (removed > 0)
                     {
                         if (msg.Length > 0)
                         {
                             msg += "/";
                         }
 
-                        msg += string.Format("{0} item{1} removed", result.Item3, result.Item3 == 1 ? string.Empty : "s");
+                        msg += removed == 1 ? "1 item removed" : $"{removed} items removed";
                     }
                 }
 

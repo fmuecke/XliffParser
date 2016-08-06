@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/fmuecke/XliffParser</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>added lots of missing setters; support adding translation units to previously empty xlf</releaseNotes>
+    <releaseNotes>XlfDocument: renamed UpdateFromResX UpdateFromSource as the source file is implicitly known</releaseNotes>
     <copyright>Copyright © 2016  Florian Mücke</copyright>
     <tags>XLF XLIFF Resx translation</tags>
 	<dependencies />

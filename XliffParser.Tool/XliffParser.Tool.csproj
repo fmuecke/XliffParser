@@ -33,10 +33,11 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FMDev.ArgsParser, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FMDev.ArgsParser.0.1.0\lib\net46\FMDev.ArgsParser.dll</HintPath>
+    <Reference Include="fmdev.ArgsParser, Version=0.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\fmdev.ArgsParser.0.1.2\lib\net46\fmdev.ArgsParser.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -58,6 +59,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
     <AdditionalFiles Include="..\stylecop.json" />
+    <None Include="XliffParser.Tool.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\XliffParser\XliffParser.csproj">
