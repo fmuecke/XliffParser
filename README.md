@@ -38,6 +38,7 @@ foreach (var u in xlfFile.TransUnits)
 var unit = xlfFile.AddTransUnit("MyResourceId", "some resouce string", "my awesome translation");
 unit.Optional.TargetState = "translated";
 unit.Optional.AddNote("No comment!", "XliffParser");
+doc.Save();
 ```
 ### Exporting translation data to C# resource files (resx)
 ```c#
