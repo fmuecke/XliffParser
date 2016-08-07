@@ -51,12 +51,6 @@
             private set { this.node.SetAttributeValue("source-language", value); }
         }
 
-        public string TargetLang
-        {
-            get { return this.node.Attribute("target-language").Value; }
-            private set { this.node.SetAttributeValue("target-language", value); }
-        }
-
         public IEnumerable<XlfTransUnit> TransUnits
         {
             get
