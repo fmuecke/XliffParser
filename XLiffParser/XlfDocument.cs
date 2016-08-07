@@ -126,6 +126,20 @@
             }
         }
 
+        public UpdateResult UpdateFromSource()
+        {
+            switch (Version)
+            {
+                default:
+                case "1.1":
+                case "1.2":
+                    return UpdateFromSource("new", "new");
+
+                case "2.0":
+                    return UpdateFromSource("initial", "initial");
+            }
+        }
+
         public UpdateResult UpdateFromSource(string updatedResourceStateString, string addedResourceStateString)
         {
             var sourceFile = Path.Combine(Path.GetDirectoryName(this.FileName), Files.Single().Original);
@@ -133,19 +147,13 @@
         }
 
         /// <summary>
-        /// Updates the xlf data from the resx source file.
+        /// Updates the xlf data from the provided resx source file.
         /// </summary>
         /// <param name="sourceFile">The source file to be processed.</param>
         /// <param name="updatedResourceStateString">The state string that should be used for updated items.</param>
         /// <param name="addedResourceStateString">The state string that should be used for added items.</param>
-        /// <returns>Return the number of updated/added/removed items</returns>
-        public Tuple<int, int, int> UpdateFromSource(string sourceFile, string updatedResourceStateString, string addedResourceStateString)
-        {
-            var result = Update(sourceFile, updatedResourceStateString, addedResourceStateString);
-            return Tuple.Create(result.UpdatedItems.Count(), result.AddedItems.Count(), result.RemovedItems.Count());
-        }
-
-        private UpdateResult Update(string sourceFile, string updatedResourceStateString, string addedResourceStateString)
+        /// <returns>Return the ids of the updated/added/removed items in separate lists.</returns>
+        public UpdateResult Update(string sourceFile, string updatedResourceStateString, string addedResourceStateString)
         {
             var resxData = new Dictionary<string, ResXItemData>(); // name, value, comment
             using (var resx = new ResXResourceReader(sourceFile))
