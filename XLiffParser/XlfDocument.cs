@@ -9,6 +9,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using System.Xml.Linq;
+    using fmdev.ResX;
 
     public class XlfDocument
     {
@@ -18,6 +19,14 @@
         {
             FileName = fileName;
             doc = XDocument.Load(FileName);
+        }
+
+        [Flags]
+        public enum ResXSaveOption
+        {
+            None = 0,
+            SortEntries = 1,
+            IncludeComments = 2
         }
 
         public string FileName
@@ -64,66 +73,42 @@
 
         public void SaveAsResX(string fileName)
         {
-            SaveAsResX(fileName, new ResXSaveMode());
+            SaveAsResX(fileName, ResXSaveOption.None);
         }
 
-        public void SaveAsResX(string fileName, ResXSaveMode mode)
+        public void SaveAsResX(string fileName, ResXSaveOption options)
         {
-            using (var resx = new ResXResourceWriter(fileName))
+            var entries = new List<ResXEntry>();
+            foreach (var f in Files)
             {
-                var nodes = new List<ResXDataNode>();
-                foreach (var f in Files)
+                foreach (var u in f.TransUnits)
                 {
-                    foreach (var u in f.TransUnits)
+                    var entry = new ResXEntry() { Id = u.Id, Value = u.Target };
+
+                    if (u.Optional.Resname.Length > 0)
                     {
-                        var id = u.Id;
-                        if (u.Optional.Resname.Length > 0)
-                        {
-                            id = u.Optional.Resname;
-                        }
-                        else if (id.Length > 5 && id.Substring(0, 5).ToUpperInvariant() == "RESX/")
-                        {
-                            id = id.Substring(5);
-                        }
-
-                        var node = new ResXDataNode(id, u.Target.Replace("\n", Environment.NewLine));
-                        if (u.Optional.Notes.Count() > 0 && mode.DoIncludeComments)
-                        {
-                            node.Comment = u.Optional.Notes.First().Value.Replace("\n", Environment.NewLine);
-                        }
-
-                        nodes.Add(node);
+                        entry.Id = u.Optional.Resname;
                     }
-                }
-
-                if (mode.DoSort)
-                {
-                    nodes.Sort((x, y) =>
+                    else if (entry.Id.Length > 5 && entry.Id.Substring(0, 5).ToUpperInvariant() == "RESX/")
                     {
-                        if (x.Name == null && y.Name == null)
-                        {
-                            return 0;
-                        }
-                        else if (x.Name == null)
-                        {
-                            return -1;
-                        }
-                        else if (y.Name == null)
-                        {
-                            return 1;
-                        }
-                        else
-                        {
-                            return x.Name.CompareTo(y.Name);
-                        }
-                    });
-                }
+                        entry.Id = entry.Id.Substring(5);
+                    }
 
-                foreach (var node in nodes)
-                {
-                    resx.AddResource(node);
+                    if (u.Optional.Notes.Count() > 0 && options.HasFlag(ResXSaveOption.IncludeComments))
+                    {
+                        entry.Comment = u.Optional.Notes.First().Value;
+                    }
+
+                    entries.Add(entry);
                 }
             }
+
+            if (options.HasFlag(ResXSaveOption.SortEntries))
+            {
+                entries.Sort();
+            }
+
+            ResXParser.Write(fileName, entries);
         }
 
         public UpdateResult UpdateFromSource()
@@ -155,26 +140,12 @@
         /// <returns>Return the ids of the updated/added/removed items in separate lists.</returns>
         public UpdateResult Update(string sourceFile, string updatedResourceStateString, string addedResourceStateString)
         {
-            var resxData = new Dictionary<string, ResXItemData>(); // name, value, comment
-            using (var resx = new ResXResourceReader(sourceFile))
-            {
-                resx.UseResXDataNodes = true;
-                var dict = resx.GetEnumerator();
-                while (dict.MoveNext())
-                {
-                    var item = dict.Value as ResXDataNode;
-                    var value = item.GetValue((ITypeResolutionService)null) as string;
-                    var itemData = new ResXItemData() { Value = value, Comment = item.Comment };
+            var resxData = new Dictionary<string, ResXEntry>(); // id, value, comment
 
-                    if (Files.Single().Optional.ToolId == "MultilingualAppToolkit")
-                    {
-                        resxData.Add("Resx/" + dict.Key as string, itemData);
-                    }
-                    else
-                    {
-                        resxData.Add(dict.Key as string, itemData);
-                    }
-                }
+            foreach (var entry in ResXParser.Read(sourceFile))
+            {
+                var key = Files.Single().Optional.ToolId == "MultilingualAppToolkit" ? "Resx/" + entry.Id : entry.Id;
+                resxData.Add(key, entry);
             }
 
             var updatedItems = new List<string>();
@@ -228,17 +199,6 @@
             }
 
             return new UpdateResult(addedItems, removedItems, updatedItems);
-        }
-
-        public class ResXSaveMode
-        {
-            public ResXSaveMode()
-            {
-            }
-
-            public bool DoSort { get; set; } = false;
-
-            public bool DoIncludeComments { get; set; } = false;
         }
     }
 }

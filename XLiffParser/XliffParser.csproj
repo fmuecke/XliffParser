@@ -44,8 +44,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\fmdev.ResX\ResXEntry.cs">
+      <Link>ResXParser\ResXEntry.cs</Link>
+    </Compile>
+    <Compile Include="..\fmdev.ResX\ResXParser.cs">
+      <Link>ResXParser\ResXParser.cs</Link>
+    </Compile>
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="ResXItemData.cs" />
     <Compile Include="UpdateResult.cs" />
     <Compile Include="XlfDataType.cs" />
     <Compile Include="XlfDocument.cs" />

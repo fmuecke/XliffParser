@@ -1,0 +1,3 @@
+[submodule "fmdev.ResX"]
+	path = fmdev.ResX
+	url = https://github.com/fmuecke/resx

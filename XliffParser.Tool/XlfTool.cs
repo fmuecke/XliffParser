@@ -142,7 +142,20 @@
         private static int RunWrite(CommandLineOptions.WriteTargetCommand cmd)
         {
             var doc = new XliffParser.XlfDocument(cmd.Xlf);
-            doc.SaveAsResX(cmd.Resx, new XlfDocument.ResXSaveMode() { DoSort = cmd.Sorted, DoIncludeComments = cmd.IncludeComments });
+            var saveOptions = XlfDocument.ResXSaveOption.None;
+
+            if (cmd.Sorted)
+            {
+                saveOptions |= XlfDocument.ResXSaveOption.SortEntries;
+            }
+
+            if (cmd.IncludeComments)
+            {
+                saveOptions |= XlfDocument.ResXSaveOption.IncludeComments;
+            }
+
+            doc.SaveAsResX(cmd.Resx, saveOptions);
+
             return 0;
         }
     }
