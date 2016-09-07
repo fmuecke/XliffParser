@@ -13,8 +13,9 @@
     <releaseNotes>first public availability</releaseNotes>
     <copyright>Copyright © 2016  Florian Mücke</copyright>
     <tags>XLF XLIFF Resx translation conversion</tags>
-    <dependencies>
-      <dependency id="fmdev.ArgsParser" version="0.1.2" />
-    </dependencies>
+    <dependencies />
   </metadata>
+  <files>
+    <file src="..\bin\Release\*.dll" target="tools" />
+  </files>
 </package>
