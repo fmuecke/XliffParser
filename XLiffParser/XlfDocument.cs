@@ -11,6 +11,13 @@
     using System.Xml.Linq;
     using fmdev.ResX;
 
+    public enum XlfDialect
+    {
+        Standard = 0,
+        RCWinTrans11 = 1,
+        MultilingualAppToolkit = 2
+    }
+
     public class XlfDocument
     {
         private XDocument doc;
@@ -19,6 +26,7 @@
         {
             FileName = fileName;
             doc = XDocument.Load(FileName);
+            Dialect = DetermineDialect();
         }
 
         [Flags]
@@ -45,6 +53,11 @@
         {
             get { return this.doc.Root.Attribute("version").Value; }
             set { this.doc.Root.SetAttributeValue("version", value); }
+        }
+
+        public XlfDialect Dialect
+        {
+            get; private set;
         }
 
         public XlfFile AddFile(string original, string dataType, string sourceLang)
@@ -144,7 +157,7 @@
 
             foreach (var entry in ResXParser.Read(sourceFile))
             {
-                var key = Files.Single().Optional.ToolId == "MultilingualAppToolkit" ? "Resx/" + entry.Id : entry.Id;
+                var key = Dialect == XlfDialect.MultilingualAppToolkit ? "Resx/" + entry.Id : entry.Id;
                 resxData.Add(key, entry);
             }
 
@@ -199,6 +212,21 @@
             }
 
             return new UpdateResult(addedItems, removedItems, updatedItems);
+        }
+
+        private XlfDialect DetermineDialect()
+        {
+            if (this.Files.First().Optional.ToolId == "MultilingualAppToolkit")
+            {
+                return XlfDialect.MultilingualAppToolkit;
+            }
+
+            if (doc.Root.GetNamespaceOfPrefix("rwt") == "http://www.schaudin.com/xmlns/rwt11")
+            {
+                return XlfDialect.RCWinTrans11;
+            }
+
+            return XlfDialect.Standard;
         }
     }
 }

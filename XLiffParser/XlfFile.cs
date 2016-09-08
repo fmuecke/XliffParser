@@ -61,6 +61,11 @@
 
         public XlfTransUnit AddTransUnit(string id, string source, string target)
         {
+            return AddTransUnit(id, source, target, XlfDialect.Standard);
+        }
+
+        public XlfTransUnit AddTransUnit(string id, string source, string target, XlfDialect dialect)
+        {
             var n = new XElement(this.ns + "trans-unit");
             var transUnits = this.node.Descendants(this.ns + "trans-unit").ToList();
 
@@ -87,7 +92,29 @@
                 body.Add(n);
             }
 
+            if (dialect == XlfDialect.RCWinTrans11)
+            {
+                var unit = new XlfTransUnit(n, this.ns, "none", source, target);
+                unit.Optional.Resname = id;
+                return unit;
+            }
+
             return new XlfTransUnit(n, this.ns, id, source, target);
+        }
+
+        public XlfTransUnit GetTransUnit(string id)
+        {
+            return GetTransUnit(id, XlfDialect.Standard);
+        }
+
+        public XlfTransUnit GetTransUnit(string id, XlfDialect dialect)
+        {
+            if (dialect == XlfDialect.RCWinTrans11)
+            {
+                return TransUnits.First(u => u.Optional.Resname == id);
+            }
+
+            return TransUnits.First(u => u.Id == id);
         }
 
         public void RemoveTransUnitById(string id)

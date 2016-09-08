@@ -6,7 +6,12 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    //// tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="3.1.1250.0" tool-company="Microsoft"
+    /*
+     <header>
+      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="3.1.1250.0" tool-company="Microsoft" />
+     </header>
+    */
+
     public class XlfTool
     {
         public string Company { get; }
