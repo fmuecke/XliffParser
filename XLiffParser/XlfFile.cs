@@ -1,5 +1,6 @@
 ﻿namespace XliffParser
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Xml.Linq;
@@ -116,12 +117,19 @@
 
         public XlfTransUnit GetTransUnit(string id, XlfDialect dialect)
         {
-            if (dialect == XlfDialect.RCWinTrans11)
+            try
             {
-                return TransUnits.First(u => u.Optional.Resname == id);
-            }
+                if (dialect == XlfDialect.RCWinTrans11)
+                {
+                    return TransUnits.First(u => u.Optional.Resname == id);
+                }
 
-            return TransUnits.First(u => u.Id == id);
+                return TransUnits.First(u => u.Id == id);
+            }
+            catch (InvalidOperationException)
+            {
+                return null;
+            }
         }
 
         public void RemoveTransUnitById(string id)
