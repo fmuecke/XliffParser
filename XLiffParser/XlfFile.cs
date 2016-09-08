@@ -6,6 +6,13 @@
 
     public class XlfFile
     {
+        private const string ElementHeader = "header";
+        private const string AttributeDataType = "datatype";
+        private const string AttributeOriginal = "original";
+        private const string AttributeSourceLanguage = "source-language";
+        private const string ElementTransUnit = "trans-unit";
+        private const string ElementBody = "body";
+        private const string IdNone = "none";
         private XElement node;
         private XNamespace ns;
 
@@ -14,9 +21,9 @@
             this.node = node;
             this.ns = ns;
             Optional = new Optionals(node);
-            if (node.Elements("header").Any())
+            if (node.Elements(ns + ElementHeader).Any())
             {
-                Header = new XlfHeader(node.Element("header"));
+                Header = new XlfHeader(node.Element(ns + ElementHeader));
             }
         }
 
@@ -31,8 +38,8 @@
         // xml, html etc.
         public string DataType
         {
-            get { return this.node.Attribute("datatype").Value; }
-            private set { this.node.SetAttributeValue("datatype", value); }
+            get { return this.node.Attribute(AttributeDataType).Value; }
+            private set { this.node.SetAttributeValue(AttributeDataType, value); }
         }
 
         public XlfHeader Header { get; private set; }
@@ -41,21 +48,21 @@
 
         public string Original
         {
-            get { return this.node.Attribute("original").Value; }
-            private set { this.node.SetAttributeValue("original", value); }
+            get { return this.node.Attribute(AttributeOriginal).Value; }
+            private set { this.node.SetAttributeValue(AttributeOriginal, value); }
         }
 
         public string SourceLang
         {
-            get { return this.node.Attribute("source-language").Value; }
-            private set { this.node.SetAttributeValue("source-language", value); }
+            get { return this.node.Attribute(AttributeSourceLanguage).Value; }
+            private set { this.node.SetAttributeValue(AttributeSourceLanguage, value); }
         }
 
         public IEnumerable<XlfTransUnit> TransUnits
         {
             get
             {
-                return this.node.Descendants(this.ns + "trans-unit").Select(t => new XlfTransUnit(t, this.ns));
+                return this.node.Descendants(this.ns + ElementTransUnit).Select(t => new XlfTransUnit(t, this.ns));
             }
         }
 
@@ -66,8 +73,8 @@
 
         public XlfTransUnit AddTransUnit(string id, string source, string target, XlfDialect dialect)
         {
-            var n = new XElement(this.ns + "trans-unit");
-            var transUnits = this.node.Descendants(this.ns + "trans-unit").ToList();
+            var n = new XElement(this.ns + ElementTransUnit);
+            var transUnits = this.node.Descendants(this.ns + ElementTransUnit).ToList();
 
             if (transUnits.Any())
             {
@@ -75,7 +82,7 @@
             }
             else
             {
-                var bodyElements = this.node.Descendants(this.ns + "body").ToList();
+                var bodyElements = this.node.Descendants(this.ns + ElementBody).ToList();
 
                 XElement body;
 
@@ -85,7 +92,7 @@
                 }
                 else
                 {
-                    body = new XElement(this.ns + "body");
+                    body = new XElement(this.ns + ElementBody);
                     this.node.Add(body);
                 }
 
@@ -94,7 +101,7 @@
 
             if (dialect == XlfDialect.RCWinTrans11)
             {
-                var unit = new XlfTransUnit(n, this.ns, "none", source, target);
+                var unit = new XlfTransUnit(n, this.ns, IdNone, source, target);
                 unit.Optional.Resname = id;
                 return unit;
             }
@@ -129,7 +136,7 @@
 
         private void RemoveTransUnit(string identifierName, string value)
         {
-            this.node.Descendants(this.ns + "trans-unit").Where(u =>
+            this.node.Descendants(this.ns + ElementTransUnit).Where(u =>
             {
                 var a = u.Attribute(identifierName);
                 return a != null && a.Value == value;
@@ -138,6 +145,11 @@
 
         public class Optionals
         {
+            private const string AttributeBuildNum = "build-num";
+            private const string AttributeProductName = "product-name";
+            private const string AttributeProductVersion = "product-version";
+            private const string AttributeTargetLanguage = "target-language";
+            private const string AttributeToolId = "tool-id";
             private XElement node;
 
             internal Optionals(XElement node)
@@ -147,32 +159,32 @@
 
             public string BuildNum
             {
-                get { return GetAttributeIfExists("build-num"); }
-                set { this.node.SetAttributeValue("build-num", value); }
+                get { return GetAttributeIfExists(AttributeBuildNum); }
+                set { this.node.SetAttributeValue(AttributeBuildNum, value); }
             }
 
             public string ProductName
             {
-                get { return GetAttributeIfExists("product-name"); }
-                set { this.node.SetAttributeValue("product-name", value); }
+                get { return GetAttributeIfExists(AttributeProductName); }
+                set { this.node.SetAttributeValue(AttributeProductName, value); }
             }
 
             public string ProductVersion
             {
-                get { return GetAttributeIfExists("product-version"); }
-                set { this.node.SetAttributeValue("product-version", value); }
+                get { return GetAttributeIfExists(AttributeProductVersion); }
+                set { this.node.SetAttributeValue(AttributeProductVersion, value); }
             }
 
             public string TargetLang
             {
-                get { return GetAttributeIfExists("target-language"); }
-                set { this.node.SetAttributeValue("target-language", value); }
+                get { return GetAttributeIfExists(AttributeTargetLanguage); }
+                set { this.node.SetAttributeValue(AttributeTargetLanguage, value); }
             }
 
             public string ToolId
             {
-                get { return GetAttributeIfExists("tool-id"); }
-                set { this.node.SetAttributeValue("tool-id", value); }
+                get { return GetAttributeIfExists(AttributeToolId); }
+                set { this.node.SetAttributeValue(AttributeToolId, value); }
             }
 
             public string GetAttributeIfExists(string name)

@@ -7,6 +7,9 @@
 
     public class XlfTransUnit
     {
+        private const string AttributeId = "id";
+        private const string ElementSource = "source";
+        private const string ElementTarget = "target";
         private XElement node;
         private XNamespace ns;
 
@@ -28,26 +31,33 @@
 
         public string Id
         {
-            get { return this.node.Attribute("id").Value; }
-            private set { this.node.SetAttributeValue("id", value); }
+            get { return this.node.Attribute(AttributeId).Value; }
+            private set { this.node.SetAttributeValue(AttributeId, value); }
         }
 
         public Optionals Optional { get; }
 
         public string Source
         {
-            get { return this.node.Element(this.ns + "source").Value; }
-            set { this.node.SetElementValue(this.ns + "source", value); }
+            get { return this.node.Element(this.ns + ElementSource).Value; }
+            set { this.node.SetElementValue(this.ns + ElementSource, value); }
         }
 
         public string Target
         {
-            get { return this.node.Element(this.ns + "target").Value; }
-            set { this.node.SetElementValue(this.ns + "target", value); }
+            get { return this.node.Element(this.ns + ElementTarget).Value; }
+            set { this.node.SetElementValue(this.ns + ElementTarget, value); }
         }
 
         public class Optionals
         {
+            private const string AttributeApproved = "approved";
+            private const string AttributeDataType = "datatype";
+            private const string ElementNote = "note";
+            private const string AttributeResName = "resname";
+            private const string AttributeResType = "restype";
+            private const string AttributeState = "state";
+            private const string AttributeTranslate = "translate";
             private XElement node;
             private XNamespace ns;
 
@@ -62,8 +72,8 @@
             /// </summary>
             public string Approved
             {
-                get { return XmlUtil.GetAttributeIfExists(this.node, "approved"); }
-                set { this.node.SetAttributeValue("approved", value); }
+                get { return XmlUtil.GetAttributeIfExists(this.node, AttributeApproved); }
+                set { this.node.SetAttributeValue(AttributeApproved, value); }
             }
 
             /// <summary>
@@ -74,15 +84,15 @@
             /// </summary>
             public string DataType
             {
-                get { return XmlUtil.GetAttributeIfExists(this.node, "datatype"); }
-                set { this.node.SetAttributeValue("datatype", value); }
+                get { return XmlUtil.GetAttributeIfExists(this.node, AttributeDataType); }
+                set { this.node.SetAttributeValue(AttributeDataType, value); }
             }
 
             public IEnumerable<XlfNote> Notes
             {
                 get
                 {
-                    return this.node.Descendants(this.ns + "note").Select(t => new XlfNote(t));
+                    return this.node.Descendants(this.ns + ElementNote).Select(t => new XlfNote(t));
                 }
             }
 
@@ -92,8 +102,8 @@
             /// </summary>
             public string Resname
             {
-                get { return XmlUtil.GetAttributeIfExists(this.node, "resname"); }
-                set { this.node.SetAttributeValue("resname", value); }
+                get { return XmlUtil.GetAttributeIfExists(this.node, AttributeResName); }
+                set { this.node.SetAttributeValue(AttributeResName, value); }
             }
 
             /// <summary>
@@ -101,8 +111,8 @@
             /// </summary>
             public string Restype
             {
-                get { return XmlUtil.GetAttributeIfExists(this.node, "restype"); }
-                set { this.node.SetAttributeValue("restype", value); }
+                get { return XmlUtil.GetAttributeIfExists(this.node, AttributeResType); }
+                set { this.node.SetAttributeValue(AttributeResType, value); }
             }
 
             /// <summary>
@@ -114,12 +124,12 @@
             {
                 get
                 {
-                    return XmlUtil.GetAttributeIfExists(this.node.Element(this.ns + "target"), "state");
+                    return XmlUtil.GetAttributeIfExists(this.node.Element(this.ns + ElementTarget), AttributeState);
                 }
 
                 set
                 {
-                    this.node.Element(this.ns + "target").SetAttributeValue("state", value);
+                    this.node.Element(this.ns + ElementTarget).SetAttributeValue(AttributeState, value);
                 }
             }
 
@@ -128,13 +138,13 @@
             /// </summary>
             public string Translate
             {
-                get { return XmlUtil.GetAttributeIfExists(this.node, "translate"); }
-                set { this.node.SetAttributeValue("translate", value); }
+                get { return XmlUtil.GetAttributeIfExists(this.node, AttributeTranslate); }
+                set { this.node.SetAttributeValue(AttributeTranslate, value); }
             }
 
             public void AddNote(string comment, string from)
             {
-                var note = new XlfNote(new XElement(this.ns + "note", comment));
+                var note = new XlfNote(new XElement(this.ns + ElementNote, comment));
                 if (!string.IsNullOrWhiteSpace(from))
                 {
                     note.Optional.From = from;
@@ -162,7 +172,7 @@
 
             public void RemoveNotes(string attributeName, string value)
             {
-                this.node.Descendants(this.ns + "note").Where(u =>
+                this.node.Descendants(this.ns + ElementNote).Where(u =>
                 {
                     var a = u.Attribute(attributeName);
                     return a != null && a.Value == value;

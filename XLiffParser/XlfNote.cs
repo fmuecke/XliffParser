@@ -41,6 +41,9 @@
 
         public class Optionals
         {
+            private const string AttributeAnnotates = "annotates";
+            private const string AttributeFrom = "from";
+            private const string AttributePriority = "priority";
             private XElement node;
 
             internal Optionals(XElement node)
@@ -54,8 +57,8 @@
             /// </summary>
             public string Annotates
             {
-                get { return XmlUtil.GetAttributeIfExists(this.node, "annotates"); }
-                set { this.node.SetAttributeValue("annotates", value); }
+                get { return XmlUtil.GetAttributeIfExists(this.node, AttributeAnnotates); }
+                set { this.node.SetAttributeValue(AttributeAnnotates, value); }
             }
 
             /// <summary>
@@ -63,8 +66,8 @@
             /// </summary>
             public string From
             {
-                get { return XmlUtil.GetAttributeIfExists(this.node, "from"); }
-                set { this.node.SetAttributeValue("from", value); }
+                get { return XmlUtil.GetAttributeIfExists(this.node, AttributeFrom); }
+                set { this.node.SetAttributeValue(AttributeFrom, value); }
             }
 
             /// <summary>
@@ -81,8 +84,8 @@
             /// </summary>
             public int Priority
             {
-                get { return XmlUtil.GetIntAttributeIfExists(this.node, "priority"); }
-                set { this.node.SetAttributeValue("priority", value); }
+                get { return XmlUtil.GetIntAttributeIfExists(this.node, AttributePriority); }
+                set { this.node.SetAttributeValue(AttributePriority, value); }
             }
         }
     }

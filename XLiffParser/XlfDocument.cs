@@ -20,6 +20,10 @@
 
     public class XlfDocument
     {
+        private const string AttributeOriginal = "original";
+        private const string ElementFile = "file";
+        private const string AttributeVersion = "version";
+        private const string ResxPrefix = "Resx/";
         private XDocument doc;
 
         public XlfDocument(string fileName)
@@ -45,14 +49,14 @@
             get
             {
                 var ns = this.doc.Root.Name.Namespace;
-                return this.doc.Descendants(ns + "file").Select(f => new XlfFile(f, ns));
+                return this.doc.Descendants(ns + ElementFile).Select(f => new XlfFile(f, ns));
             }
         }
 
         public string Version
         {
-            get { return this.doc.Root.Attribute("version").Value; }
-            set { this.doc.Root.SetAttributeValue("version", value); }
+            get { return this.doc.Root.Attribute(AttributeVersion).Value; }
+            set { this.doc.Root.SetAttributeValue(AttributeVersion, value); }
         }
 
         public XlfDialect Dialect
@@ -63,8 +67,8 @@
         public XlfFile AddFile(string original, string dataType, string sourceLang)
         {
             var ns = this.doc.Root.Name.Namespace;
-            var f = new XElement(ns + "file");
-            this.doc.Descendants(ns + "file").Last().AddAfterSelf(f);
+            var f = new XElement(ns + ElementFile);
+            this.doc.Descendants(ns + ElementFile).Last().AddAfterSelf(f);
 
             return new XlfFile(f, ns, original, dataType, sourceLang);
         }
@@ -72,9 +76,9 @@
         public void RemoveFile(string original)
         {
             var ns = this.doc.Root.Name.Namespace;
-            this.doc.Descendants(ns + "file").Where(u =>
+            this.doc.Descendants(ns + ElementFile).Where(u =>
             {
-                var a = u.Attribute("original");
+                var a = u.Attribute(AttributeOriginal);
                 return a != null && a.Value == original;
             }).Remove();
         }
@@ -102,9 +106,12 @@
                     {
                         entry.Id = u.Optional.Resname;
                     }
-                    else if (entry.Id.Length > 5 && entry.Id.Substring(0, 5).ToUpperInvariant() == "RESX/")
+                    else
                     {
-                        entry.Id = entry.Id.Substring(5);
+                        if (entry.Id.Length > 5 && string.Compare(entry.Id.Substring(0, 5), ResxPrefix, true) == 0)
+                        {
+                            entry.Id = entry.Id.Substring(5);
+                        }
                     }
 
                     if (u.Optional.Notes.Count() > 0 && options.HasFlag(ResXSaveOption.IncludeComments))
@@ -157,7 +164,7 @@
 
             foreach (var entry in ResXParser.Read(sourceFile))
             {
-                var key = Dialect == XlfDialect.MultilingualAppToolkit ? "Resx/" + entry.Id : entry.Id;
+                var key = Dialect == XlfDialect.MultilingualAppToolkit ? ResxPrefix + entry.Id : entry.Id;
                 resxData.Add(key, entry);
             }
 
