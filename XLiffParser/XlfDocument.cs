@@ -128,7 +128,7 @@
                 entries.Sort();
             }
 
-            ResXParser.Write(fileName, entries);
+            ResXFile.Write(fileName, entries);
         }
 
         public UpdateResult UpdateFromSource()
@@ -162,7 +162,7 @@
         {
             var resxData = new Dictionary<string, ResXEntry>(); // id, value, comment
 
-            foreach (var entry in ResXParser.Read(sourceFile))
+            foreach (var entry in ResXFile.Read(sourceFile))
             {
                 var key = Dialect == XlfDialect.MultilingualAppToolkit ? ResxPrefix + entry.Id : entry.Id;
                 resxData.Add(key, entry);
