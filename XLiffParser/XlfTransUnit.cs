@@ -7,6 +7,7 @@
 
     public class XlfTransUnit
     {
+        public const string ResxPrefix = "Resx/";
         private const string AttributeId = "id";
         private const string ElementSource = "source";
         private const string ElementTarget = "target";
@@ -33,6 +34,30 @@
         {
             get { return this.node.Attribute(AttributeId).Value; }
             private set { this.node.SetAttributeValue(AttributeId, value); }
+        }
+
+        public string GetId(XlfDialect dialect)
+        {
+            string id = Id;
+            switch (dialect)
+            {
+                case XlfDialect.RCWinTrans11:
+                    id = Optional.Resname;
+                    break;
+
+                case XliffParser.XlfDialect.MultilingualAppToolkit:
+                    if (Id.ToLowerInvariant().StartsWith(XlfTransUnit.ResxPrefix.ToLowerInvariant()))
+                    {
+                        id = Id.Substring(XliffParser.XlfTransUnit.ResxPrefix.Length);
+                    }
+
+                    break;
+
+                default:
+                    break;
+            }
+
+            return id;
         }
 
         public Optionals Optional { get; }

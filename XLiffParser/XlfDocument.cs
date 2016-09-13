@@ -23,7 +23,6 @@
         private const string AttributeOriginal = "original";
         private const string ElementFile = "file";
         private const string AttributeVersion = "version";
-        private const string ResxPrefix = "Resx/";
         private XDocument doc;
 
         public XlfDocument(string fileName)
@@ -61,7 +60,7 @@
 
         public XlfDialect Dialect
         {
-            get; private set;
+            get; set;
         }
 
         public XlfFile AddFile(string original, string dataType, string sourceLang)
@@ -102,16 +101,22 @@
                 {
                     var entry = new ResXEntry() { Id = u.Id, Value = u.Target };
 
-                    if (u.Optional.Resname.Length > 0)
+                    switch (Dialect)
                     {
-                        entry.Id = u.Optional.Resname;
-                    }
-                    else
-                    {
-                        if (entry.Id.Length > 5 && string.Compare(entry.Id.Substring(0, 5), ResxPrefix, true) == 0)
-                        {
-                            entry.Id = entry.Id.Substring(5);
-                        }
+                        case XlfDialect.RCWinTrans11:
+                            entry.Id = u.Optional.Resname;
+                            break;
+
+                        case XlfDialect.MultilingualAppToolkit:
+                            if (entry.Id.ToLowerInvariant().StartsWith(XlfTransUnit.ResxPrefix.ToLowerInvariant()))
+                            {
+                                entry.Id = entry.Id.Substring(5);
+                            }
+
+                            break;
+
+                        default:
+                            break;
                     }
 
                     if (u.Optional.Notes.Count() > 0 && options.HasFlag(ResXSaveOption.IncludeComments))
@@ -164,7 +169,7 @@
 
             foreach (var entry in ResXFile.Read(sourceFile))
             {
-                var key = Dialect == XlfDialect.MultilingualAppToolkit ? ResxPrefix + entry.Id : entry.Id;
+                var key = Dialect == XlfDialect.MultilingualAppToolkit ? XlfTransUnit.ResxPrefix + entry.Id : entry.Id;
                 resxData.Add(key, entry);
             }
 
@@ -175,7 +180,7 @@
             {
                 foreach (var u in f.TransUnits)
                 {
-                    var key = u.Optional.Resname.Length > 0 ? u.Optional.Resname : u.Id;
+                    var key = u.GetId(Dialect);
                     if (resxData.ContainsKey(key))
                     {
                         if (XmlUtil.NormalizeLineBreaks(u.Source) != XmlUtil.NormalizeLineBreaks(resxData[key].Value))
@@ -198,14 +203,7 @@
 
                 foreach (var id in removedItems)
                 {
-                    if (Version == "1.1")
-                    {
-                        // RC-Wintrans
-                        f.RemoveTransUnitByResname(id);
-                    }
-
-                    // all others
-                    f.RemoveTransUnitById(id);
+                    f.RemoveTransUnit(id, Dialect);
                 }
 
                 foreach (var d in resxData)
