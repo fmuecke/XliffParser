@@ -169,8 +169,7 @@
 
             foreach (var entry in ResXFile.Read(sourceFile))
             {
-                var key = Dialect == XlfDialect.MultilingualAppToolkit ? XlfTransUnit.ResxPrefix + entry.Id : entry.Id;
-                resxData.Add(key, entry);
+                resxData.Add(entry.Id, entry);
             }
 
             var updatedItems = new List<string>();
@@ -208,7 +207,7 @@
 
                 foreach (var d in resxData)
                 {
-                    var unit = f.AddTransUnit(d.Key, d.Value.Value, d.Value.Value);
+                    var unit = f.AddTransUnit(d.Key, d.Value.Value, d.Value.Value, XlfFile.AddMode.FailIfExists, Dialect);
                     unit.Optional.TargetState = addedResourceStateString;
                     unit.Optional.SetCommentFromResx(d.Value.Comment);
 

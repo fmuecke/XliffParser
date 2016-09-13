@@ -36,6 +36,20 @@
             private set { this.node.SetAttributeValue(AttributeId, value); }
         }
 
+        public Optionals Optional { get; }
+
+        public string Source
+        {
+            get { return this.node.Element(this.ns + ElementSource).Value; }
+            set { this.node.SetElementValue(this.ns + ElementSource, value); }
+        }
+
+        public string Target
+        {
+            get { return this.node.Element(this.ns + ElementTarget).Value; }
+            set { this.node.SetElementValue(this.ns + ElementTarget, value); }
+        }
+
         public string GetId(XlfDialect dialect)
         {
             string id = Id;
@@ -58,20 +72,6 @@
             }
 
             return id;
-        }
-
-        public Optionals Optional { get; }
-
-        public string Source
-        {
-            get { return this.node.Element(this.ns + ElementSource).Value; }
-            set { this.node.SetElementValue(this.ns + ElementSource, value); }
-        }
-
-        public string Target
-        {
-            get { return this.node.Element(this.ns + ElementTarget).Value; }
-            set { this.node.SetElementValue(this.ns + ElementTarget, value); }
         }
 
         public class Optionals
@@ -202,6 +202,11 @@
                     var a = u.Attribute(attributeName);
                     return a != null && a.Value == value;
                 }).Remove();
+            }
+
+            public override string ToString()
+            {
+                return node.ToString();
             }
         }
     }

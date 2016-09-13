@@ -14,6 +14,8 @@
         private const string ElementTransUnit = "trans-unit";
         private const string ElementBody = "body";
         private const string IdNone = "none";
+        private const string AttributeId = "id";
+        private const string AttributeResname = "resname";
         private XElement node;
         private XNamespace ns;
 
@@ -34,6 +36,13 @@
             Original = original;
             DataType = dataType;
             SourceLang = sourceLang;
+        }
+
+        public enum AddMode
+        {
+            SkipExisting = 0,
+            UpdateExisting = 1,
+            FailIfExists = 2
         }
 
         // xml, html etc.
@@ -67,13 +76,33 @@
             }
         }
 
-        public XlfTransUnit AddTransUnit(string id, string source, string target)
+        // Add a new or updates an existing translation unit
+        public XlfTransUnit AddOrUpdateTransUnit(string id, string source, string target, XlfDialect dialect)
         {
-            return AddTransUnit(id, source, target, XlfDialect.Standard);
+            return AddTransUnit(id, source, target, AddMode.UpdateExisting, dialect);
         }
 
-        public XlfTransUnit AddTransUnit(string id, string source, string target, XlfDialect dialect)
+        public XlfTransUnit AddTransUnit(string id, string source, string target, AddMode addMode, XlfDialect dialect)
         {
+            XlfTransUnit resultUnit;
+            if (TryGetTransUnit(id, dialect, out resultUnit))
+            {
+                switch (addMode)
+                {
+                    case AddMode.FailIfExists:
+                        throw new InvalidOperationException($"The is already a trans-unit with id={id}");
+
+                    case AddMode.SkipExisting:
+                        return resultUnit;
+
+                    default:
+                    case AddMode.UpdateExisting:
+                        resultUnit.Source = source;
+                        resultUnit.Target = target;
+                        return resultUnit;
+                }
+            }
+
             var n = new XElement(this.ns + ElementTransUnit);
             var transUnits = this.node.Descendants(this.ns + ElementTransUnit).ToList();
 
@@ -106,48 +135,60 @@
                 unit.Optional.Resname = id;
                 return unit;
             }
+            else if (dialect == XlfDialect.MultilingualAppToolkit)
+            {
+                if (!id.ToLowerInvariant().StartsWith(XlfTransUnit.ResxPrefix.ToLowerInvariant()))
+                {
+                    return new XlfTransUnit(n, this.ns, XlfTransUnit.ResxPrefix + id, source, target);
+                }
+            }
 
             return new XlfTransUnit(n, this.ns, id, source, target);
         }
 
-        public XlfTransUnit GetTransUnit(string id)
+        public XlfTransUnit GetTransUnit(string id, XlfDialect dialect)
         {
-            return GetTransUnit(id, XlfDialect.Standard);
+            return TransUnits.First(u => u.GetId(dialect) == id);
         }
 
-        public XlfTransUnit GetTransUnit(string id, XlfDialect dialect)
+        public bool TryGetTransUnit(string id, XlfDialect dialect, out XlfTransUnit unit)
         {
             try
             {
-                if (dialect == XlfDialect.RCWinTrans11)
-                {
-                    return TransUnits.First(u => u.Optional.Resname == id);
-                }
-
-                return TransUnits.First(u => u.Id == id);
+                unit = GetTransUnit(id, dialect);
+                return true;
             }
             catch (InvalidOperationException)
             {
-                return null;
+                unit = null;
+                return false;
             }
         }
 
-        public void RemoveTransUnitById(string id)
+        public void RemoveTransUnit(string id, XlfDialect dialect)
         {
-            RemoveTransUnit("id", id);
+            switch (dialect)
+            {
+                case XlfDialect.RCWinTrans11:
+                    RemoveTransUnit(AttributeResname, id);
+                    break;
+
+                case XlfDialect.MultilingualAppToolkit:
+                    RemoveTransUnit(AttributeId, XlfTransUnit.ResxPrefix + id);
+                    break;
+
+                default:
+                    RemoveTransUnit(AttributeId, id);
+                    break;
+            }
         }
 
-        public void RemoveTransUnitByResname(string resname)
-        {
-            RemoveTransUnit("resname", resname);
-        }
-
-        private void RemoveTransUnit(string identifierName, string value)
+        public void RemoveTransUnit(string identifierName, string identifierValue)
         {
             this.node.Descendants(this.ns + ElementTransUnit).Where(u =>
             {
                 var a = u.Attribute(identifierName);
-                return a != null && a.Value == value;
+                return a != null && a.Value == identifierValue;
             }).Remove();
         }
 
