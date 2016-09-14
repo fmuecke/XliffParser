@@ -99,25 +99,8 @@
             {
                 foreach (var u in f.TransUnits)
                 {
-                    var entry = new ResXEntry() { Id = u.Id, Value = u.Target };
+                    var entry = new ResXEntry() { Id = u.GetId(Dialect), Value = u.Target };
 
-                    switch (Dialect)
-                    {
-                        case XlfDialect.RCWinTrans11:
-                            entry.Id = u.Optional.Resname;
-                            break;
-
-                        case XlfDialect.MultilingualAppToolkit:
-                            if (entry.Id.ToLowerInvariant().StartsWith(XlfTransUnit.ResxPrefix.ToLowerInvariant()))
-                            {
-                                entry.Id = entry.Id.Substring(5);
-                            }
-
-                            break;
-
-                        default:
-                            break;
-                    }
 
                     if (u.Optional.Notes.Count() > 0 && options.HasFlag(ResXSaveOption.IncludeComments))
                     {
