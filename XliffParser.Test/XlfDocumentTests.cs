@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using System.IO;
 
     [TestClass]
     public class XlfDocumentTests
@@ -73,6 +74,31 @@
                 AssertTranslationUnit(xlfTransUnits, "b", "Text for b", "Translation", "Comment for b", "foo");
                 AssertTranslationUnit(xlfTransUnits, "c", "Text for c", "Translation", "Comment for c", "foo");
                 AssertTranslationUnit(xlfTransUnits, "d", "Text for d", "Text for d", "Comment for d", "bar");
+            }
+        }
+
+        [TestMethod]
+        public void SaveAsResX()
+        {
+            using (var sample = new ResxWithStaleCorrespondingXlf())
+            {
+                var doc = new XlfDocument(sample.XlfFileName);
+
+                string resXFile = System.IO.Path.GetTempFileName();
+                string resXFile2 = System.IO.Path.GetTempFileName();
+                try
+                {
+                    doc.SaveAsResX(resXFile);
+                    Assert.IsFalse(File.ReadAllText(resXFile).Contains("<comment>Comment for a</comment>"), "SaveAsResX does not write comments per default");
+
+                    doc.SaveAsResX(resXFile2, XlfDocument.ResXSaveOption.IncludeComments);
+                    Assert.IsTrue(File.ReadAllText(resXFile2).Contains("<comment>Comment for a</comment>"), "SaveAsResX must include comments when specified so");
+                }
+                finally
+                {
+                    System.IO.File.Delete(resXFile);
+                    System.IO.File.Delete(resXFile2);
+                }
             }
         }
 

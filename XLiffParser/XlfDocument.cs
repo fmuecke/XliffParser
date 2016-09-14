@@ -101,8 +101,7 @@
                 {
                     var entry = new ResXEntry() { Id = u.GetId(Dialect), Value = u.Target };
 
-
-                    if (u.Optional.Notes.Count() > 0 && options.HasFlag(ResXSaveOption.IncludeComments))
+                    if (options.HasFlag(ResXSaveOption.IncludeComments) && u.Optional.Notes.Count() > 0)
                     {
                         entry.Comment = u.Optional.Notes.First().Value;
                     }
@@ -116,7 +115,7 @@
                 entries.Sort();
             }
 
-            ResXFile.Write(fileName, entries);
+            ResXFile.Write(fileName, entries, options.HasFlag(ResXSaveOption.IncludeComments) ? ResXFile.Mode.IncludeComments : ResXFile.Mode.SkipComments);
         }
 
         public UpdateResult UpdateFromSource()
@@ -150,7 +149,7 @@
         {
             var resxData = new Dictionary<string, ResXEntry>(); // id, value, comment
 
-            foreach (var entry in ResXFile.Read(sourceFile))
+            foreach (var entry in ResXFile.Read(sourceFile, ResXFile.Mode.IncludeComments))
             {
                 resxData.Add(entry.Id, entry);
             }
