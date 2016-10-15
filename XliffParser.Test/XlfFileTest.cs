@@ -60,7 +60,7 @@
                 file.GetTransUnit("c", XlfDialect.Standard);
 
                 file.RemoveTransUnit("c", XlfDialect.Standard);
-                Assert.AreEqual(initialCount -1, file.TransUnits.Count(), "after removing an item the count should one less than before");
+                Assert.AreEqual(initialCount - 1, file.TransUnits.Count(), "after removing an item the count should one less than before");
             }
         }
     }

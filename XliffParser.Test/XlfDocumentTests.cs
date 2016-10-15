@@ -1,9 +1,9 @@
 ﻿namespace XliffParser.Test
 {
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using System.IO;
 
     [TestClass]
     public class XlfDocumentTests
