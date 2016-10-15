@@ -115,7 +115,7 @@
                 entries.Sort();
             }
 
-            ResXFile.Write(fileName, entries, options.HasFlag(ResXSaveOption.IncludeComments) ? ResXFile.Mode.IncludeComments : ResXFile.Mode.SkipComments);
+            ResXFile.Write(fileName, entries, options.HasFlag(ResXSaveOption.IncludeComments) ? ResXFile.Option.None : ResXFile.Option.SkipComments);
         }
 
         public UpdateResult UpdateFromSource()
@@ -149,7 +149,7 @@
         {
             var resxData = new Dictionary<string, ResXEntry>(); // id, value, comment
 
-            foreach (var entry in ResXFile.Read(sourceFile, ResXFile.Mode.IncludeComments))
+            foreach (var entry in ResXFile.Read(sourceFile, ResXFile.Option.None))
             {
                 resxData.Add(entry.Id, entry);
             }
