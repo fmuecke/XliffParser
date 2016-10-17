@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="fmdev.ResX, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\fmdev.ResX.0.2.0\lib\net46\fmdev.ResX.dll</HintPath>
+      <HintPath>..\packages\fmdev.ResX.0.2.0\lib\net46\fmdev.ResX.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
