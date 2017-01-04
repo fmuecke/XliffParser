@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Florian Mücke")]
 [assembly: AssemblyProduct("XliffParser")]
-[assembly: AssemblyCopyright("Copyright (C) 2016  Florian Mücke")]
+[assembly: AssemblyCopyright("Copyright (C) 2017  Florian Mücke")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -33,5 +33,5 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("0.1.*")]
-[assembly: AssemblyFileVersion("0.1.2")]
-[assembly: AssemblyInformationalVersion("0.1.2")]
+[assembly: AssemblyFileVersion("0.1.3")]
+[assembly: AssemblyInformationalVersion("0.1.3")]

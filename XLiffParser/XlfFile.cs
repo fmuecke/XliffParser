@@ -90,7 +90,7 @@
                 switch (addMode)
                 {
                     case AddMode.FailIfExists:
-                        throw new InvalidOperationException($"The is already a trans-unit with id={id}");
+                        throw new InvalidOperationException($"There is already a trans-unit with id={id}");
 
                     case AddMode.SkipExisting:
                         return resultUnit;
@@ -98,7 +98,13 @@
                     default:
                     case AddMode.UpdateExisting:
                         resultUnit.Source = source;
-                        resultUnit.Target = target;
+
+                        // only update target value if there is already a target element present
+                        if (resultUnit.Target != null)
+                        {
+                            resultUnit.Target = target;
+                        }
+
                         return resultUnit;
                 }
             }

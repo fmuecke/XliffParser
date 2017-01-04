@@ -10,8 +10,8 @@
     <projectUrl>https://github.com/fmuecke/XliffParser</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>first public availability</releaseNotes>
-    <copyright>Copyright © 2016  Florian Mücke</copyright>
+    <releaseNotes>v0.1.3: using XliffParser 0.5.3</releaseNotes>
+    <copyright>Copyright © 2017  Florian Mücke</copyright>
     <tags>XLF XLIFF Resx translation conversion</tags>
     <dependencies />
   </metadata>

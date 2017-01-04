@@ -60,6 +60,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ResxWithEmptyCorrespondingXlf.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResxWithNeutralLangXlf.cs" />
     <Compile Include="ResxWithStaleCorrespondingXlf.cs" />
     <Compile Include="TestSample.cs" />
     <Compile Include="XlfFileTest.cs" />

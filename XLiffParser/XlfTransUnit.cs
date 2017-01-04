@@ -27,7 +27,11 @@
         {
             Id = id;
             Source = source;
-            Target = target;
+
+            if (!string.IsNullOrWhiteSpace(target))
+            {
+                Target = target;
+            }
         }
 
         public string Id
@@ -44,10 +48,35 @@
             set { this.node.SetElementValue(this.ns + ElementSource, value); }
         }
 
+        /// <summary>
+        /// Gets or sets the value of the <target> element. May be null if the element does not exist.
+        /// Allowed are zero or one target elements.
+        /// </summary>
         public string Target
         {
-            get { return this.node.Element(this.ns + ElementTarget).Value; }
-            set { this.node.SetElementValue(this.ns + ElementTarget, value); }
+            get
+            {
+                var targets = this.node.Elements(this.ns + ElementTarget);
+                if (!targets.Any())
+                {
+                    return null;
+                }
+
+                return targets.First().Value;
+            }
+
+            set
+            {
+                if (Target == null)
+                {
+                    var targetNode = new XElement(this.ns + ElementTarget, value);
+                    this.node.Element(ns + ElementSource).AddAfterSelf(targetNode);
+                }
+                else
+                {
+                    this.node.SetElementValue(this.ns + ElementTarget, value);
+                }
+            }
         }
 
         public string GetId(XlfDialect dialect)
@@ -93,7 +122,7 @@
             }
 
             /// <summary>
-            /// Indicates whether a translation is final or has passed its final review.
+            /// Gets or sets the approved attribute which indicates whether a translation is final or has passed its final review.
             /// </summary>
             public string Approved
             {
@@ -102,6 +131,7 @@
             }
 
             /// <summary>
+            /// Gets or sets the datatype attribute.
             /// The datatype attribute specifies the kind of text contained in the element. Depending on that type, you may
             /// apply different processes to the data. For example: datatype="winres" specifies that the content is Windows
             /// resources which would allow using the Win32 API in rendering the content.
@@ -122,7 +152,8 @@
             }
 
             /// <summary>
-            /// Resource name or identifier of a item. For example: the key in the key/value pair in a Java properties file,
+            /// Gets or sets the resname attribute which is the resource name or identifier of a item.
+            /// For example: the key in the key/value pair in a Java properties file,
             /// the ID of a string in a Windows string table, the index value of an entry in a database table, etc.
             /// </summary>
             public string Resname
@@ -132,7 +163,7 @@
             }
 
             /// <summary>
-            ///  Indicates the resource type of the container element.
+            /// Gets or sets the restype attribute which indicates the resource type of the container element.
             /// </summary>
             public string Restype
             {
@@ -141,7 +172,7 @@
             }
 
             /// <summary>
-            /// The status of a particular translation in a <target> or <bin-target> element.
+            /// Gets or sets the status of a particular translation in a <target> or <bin-target> element.
             /// <see cref="http://docs.oasis-open.org/xliff/v1.2/os/xliff-core.html#state"/>
             /// TODO later: use XlfState
             /// </summary>
@@ -149,17 +180,25 @@
             {
                 get
                 {
+                    if (!this.node.Elements(this.ns + ElementTarget).Any())
+                    {
+                        return null;
+                    }
+
                     return XmlUtil.GetAttributeIfExists(this.node.Element(this.ns + ElementTarget), AttributeState);
                 }
 
                 set
                 {
-                    this.node.Element(this.ns + ElementTarget).SetAttributeValue(AttributeState, value);
+                    if (this.node.Elements(this.ns + ElementTarget).Any())
+                    {
+                        this.node.Element(this.ns + ElementTarget).SetAttributeValue(AttributeState, value);
+                    }
                 }
             }
 
             /// <summary>
-            /// Indicates whether or not the text referred to should be translated.
+            /// Gets or sets the translate attribute which indicates whether or not the text referred to should be translated.
             /// </summary>
             public string Translate
             {
