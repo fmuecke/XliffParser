@@ -8,3 +8,4 @@ publish/
 **/debug/
 **/release/
 *.user
+*.orig
