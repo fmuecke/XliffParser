@@ -10,7 +10,9 @@
     <projectUrl>https://github.com/fmuecke/XliffParser</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>v0.5.3: target element can be optional</releaseNotes>
+    <releaseNotes>
+        v0.5.4: added handler for new xlf exporter interface
+        v0.5.3: target element can be optional</releaseNotes>
     <copyright>Copyright © 2017  Florian Mücke</copyright>
     <tags>XLF XLIFF Resx translation</tags>
 	<dependencies />
