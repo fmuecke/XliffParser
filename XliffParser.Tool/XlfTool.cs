@@ -1,6 +1,7 @@
 ﻿namespace XliffParser.Tool
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using fmdev.ArgsParser;
@@ -22,6 +23,11 @@
                     if (parser.Result is CommandLineOptions.UpdateCommand)
                     {
                         return RunUpdate(parser.Result as CommandLineOptions.UpdateCommand);
+                    }
+
+                    if (parser.Result is CommandLineOptions.ExportCsvCommand)
+                    {
+                        return RunExportCsv(parser.Result as CommandLineOptions.ExportCsvCommand);
                     }
 
                     if (parser.Result is CommandLineOptions.WriteTargetCommand)
@@ -46,6 +52,22 @@
             }
 
             return 1;
+        }
+
+        private static int RunExportCsv(CommandLineOptions.ExportCsvCommand cmd)
+        {
+            var doc = new XliffParser.XlfDocument(cmd.Xlf);
+            var csv = new CsvAdapter()
+            {
+                CustomIdColumn = cmd.CustomIdColumn,
+                IsCsvHeaderRequired = cmd.WithHeaders,
+                IsLangColumnRequired = cmd.WithLanguage
+            };
+
+            var stateFilter = string.IsNullOrWhiteSpace(cmd.Filter) ? null : cmd.Filter.Split(';').ToList();
+            doc.Files.First().Export(cmd.Out, csv, stateFilter);
+
+            return 0;
         }
 
         private static int RunDefault(CommandLineOptions.InfoCommand cmd)

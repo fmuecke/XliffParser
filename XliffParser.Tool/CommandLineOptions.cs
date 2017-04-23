@@ -52,6 +52,28 @@
             public bool IncludeComments { get; set; }
         }
 
+        [Description("Export XLIFF translation units to a CSV file.")]
+        public class ExportCsvCommand : Command
+        {
+            [CommandArg(HelpText = "specify xlf input file", IsRequired = true)]
+            public string Xlf { get; set; }
+
+            [CommandArg(HelpText = "the file to export into", IsRequired = true)]
+            public string Out { get; set; }
+
+            [CommandArg(HelpText = "restrict units to specified states (delimiter=;)", IsRequired = false)]
+            public string Filter { get; set; }
+
+            [CommandArg(HelpText = "include a custom id as separate column", IsRequired = false)]
+            public string CustomIdColumn { get; set; }
+
+            [CommandArg(HelpText = "include the language as separate column", IsRequired = false)]
+            public bool WithLanguage { get; set; }
+
+            [CommandArg(HelpText = "first row of the CSV file contains the column names (default: true)", IsRequired = false)]
+            public bool WithHeaders { get; set; }
+        }
+
         [Description("retrieve xlf file information")]
         public class InfoCommand : Command
         {

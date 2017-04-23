@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="IXlfExporter.cs" />
     <Compile Include="UpdateResult.cs" />
     <Compile Include="XlfDataType.cs" />
     <Compile Include="XlfDocument.cs" />
