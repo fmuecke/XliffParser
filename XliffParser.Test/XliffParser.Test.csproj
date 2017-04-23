@@ -63,6 +63,7 @@
     <Compile Include="ResxWithNeutralLangXlf.cs" />
     <Compile Include="ResxWithStaleCorrespondingXlf.cs" />
     <Compile Include="TestSample.cs" />
+    <Compile Include="TestXlfExporter.cs" />
     <Compile Include="XlfFileTest.cs" />
     <Compile Include="XlfDocumentTests.cs" />
     <Compile Include="XlfTransUnitTests.cs" />

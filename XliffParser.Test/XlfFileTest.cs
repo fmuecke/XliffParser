@@ -1,5 +1,6 @@
 ﻿namespace XliffParser.Test
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -7,6 +8,64 @@
     [TestClass]
     public class XlfFileTest
     {
+        [TestMethod]
+        public void XlfSampleHasValidData()
+        {
+            using (var sample = new ResxWithStaleCorrespondingXlf())
+            {
+                var doc = new XlfDocument(sample.XlfFileName);
+                var file = doc.Files.First();
+                Assert.IsTrue(file.TransUnits.Count() > 0);
+            }
+        }
+
+        [TestMethod]
+        public void ExporterGetsTransUnits()
+        {
+            using (var sample = new ResxWithStaleCorrespondingXlf())
+            {
+                var doc = new XlfDocument(sample.XlfFileName);
+                var file = doc.Files.First();
+
+                var exporter = new TestXlfExporter();
+                file.Export(null, exporter, null);
+                Assert.IsTrue(exporter.Units.Count > 0);
+                Assert.AreEqual(exporter.Units.Count, file.TransUnits.Count());
+            }
+        }
+
+        [TestMethod]
+        public void ExporterGetsFileName()
+        {
+            using (var sample = new ResxWithStaleCorrespondingXlf())
+            {
+                var doc = new XlfDocument(sample.XlfFileName);
+                var file = doc.Files.First();
+
+                var exporter = new TestXlfExporter();
+                var fileName = Guid.NewGuid().ToString();
+                file.Export(fileName, exporter, null);
+                Assert.AreEqual(exporter.File, fileName);
+            }
+        }
+
+        [TestMethod]
+        public void ExporterGetsOnlyFilteredItems()
+        {
+            using (var sample = new ResxWithStaleCorrespondingXlf())
+            {
+                var doc = new XlfDocument(sample.XlfFileName);
+                var file = doc.Files.First();
+
+                var exporter = new TestXlfExporter();
+                file.Export(null, exporter, new List<string>() { "this-state-does-not-exist" });
+                Assert.AreEqual(exporter.Units.Count, 0);
+
+                file.Export(null, exporter, new List<string>() { "this-state-does-not-exist", "final" });
+                Assert.IsTrue(exporter.Units.Count > 0);
+            }
+        }
+
         [TestMethod]
         public void AddTransUnitTest()
         {

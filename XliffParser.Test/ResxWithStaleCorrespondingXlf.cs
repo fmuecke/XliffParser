@@ -92,7 +92,7 @@ namespace XliffParser.Test
    </trans-unit>
    <trans-unit id=""c"" maxbytes=""14"">
     <source xml:lang=""en-US"">stale</source>
-    <target xml:lang=""ja-JP"">Translation</target>
+    <target state=""final"" xml:lang=""ja-JP"">Translation</target>
    </trans-unit>
    <trans-unit id=""e"" maxbytes=""14"">
     <source xml:lang=""en-US"">Text for e</source>
