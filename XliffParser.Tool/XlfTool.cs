@@ -12,27 +12,27 @@
         {
             try
             {
-                var parser = new ArgsParser(CommandLineOptions.Create());
+                var parser = new ArgsParser(typeof(CommandArgs));
                 if (parser.Parse(args))
                 {
-                    if (parser.Result is CommandLineOptions.InfoCommand)
+                    if (parser.Result is CommandArgs.InfoCommand)
                     {
-                        return RunDefault(parser.Result as CommandLineOptions.InfoCommand);
+                        return RunDefault(parser.Result as CommandArgs.InfoCommand);
                     }
 
-                    if (parser.Result is CommandLineOptions.UpdateCommand)
+                    if (parser.Result is CommandArgs.UpdateCommand)
                     {
-                        return RunUpdate(parser.Result as CommandLineOptions.UpdateCommand);
+                        return RunUpdate(parser.Result as CommandArgs.UpdateCommand);
                     }
 
-                    if (parser.Result is CommandLineOptions.ExportCsvCommand)
+                    if (parser.Result is CommandArgs.ExportCsvCommand)
                     {
-                        return RunExportCsv(parser.Result as CommandLineOptions.ExportCsvCommand);
+                        return RunExportCsv(parser.Result as CommandArgs.ExportCsvCommand);
                     }
 
-                    if (parser.Result is CommandLineOptions.WriteTargetCommand)
+                    if (parser.Result is CommandArgs.WriteTargetCommand)
                     {
-                        return RunWrite(parser.Result as CommandLineOptions.WriteTargetCommand);
+                        return RunWrite(parser.Result as CommandArgs.WriteTargetCommand);
                     }
                     else
                     {
@@ -54,13 +54,13 @@
             return 1;
         }
 
-        private static int RunExportCsv(CommandLineOptions.ExportCsvCommand cmd)
+        private static int RunExportCsv(CommandArgs.ExportCsvCommand cmd)
         {
             var doc = new XliffParser.XlfDocument(cmd.Xlf);
             var csv = new CsvAdapter()
             {
                 CustomIdColumn = cmd.CustomIdColumn,
-                IsCsvHeaderRequired = cmd.WithHeaders,
+                IsCsvHeaderRequired = !cmd.NoHeader,
                 IsLangColumnRequired = cmd.WithLanguage
             };
 
@@ -70,7 +70,7 @@
             return 0;
         }
 
-        private static int RunDefault(CommandLineOptions.InfoCommand cmd)
+        private static int RunDefault(CommandArgs.InfoCommand cmd)
         {
             var xlfFile = cmd.Xlf;
             var doc = new XliffParser.XlfDocument(xlfFile);
@@ -91,7 +91,7 @@
             return 0;
         }
 
-        private static int RunUpdate(CommandLineOptions.UpdateCommand cmd)
+        private static int RunUpdate(CommandArgs.UpdateCommand cmd)
         {
             var xlfFile = cmd.Xlf;
             var resxFile = cmd.Resx;
@@ -161,7 +161,7 @@
             return 0;
         }
 
-        private static int RunWrite(CommandLineOptions.WriteTargetCommand cmd)
+        private static int RunWrite(CommandArgs.WriteTargetCommand cmd)
         {
             var doc = new XliffParser.XlfDocument(cmd.Xlf);
             var saveOptions = XlfDocument.ResXSaveOption.None;

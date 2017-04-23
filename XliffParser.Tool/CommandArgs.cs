@@ -8,18 +8,8 @@
     using System.Threading.Tasks;
     using fmdev.ArgsParser;
 
-    public class CommandLineOptions
+    public class CommandArgs
     {
-        public static List<Command> Create()
-        {
-            return new List<Command>()
-            {
-                new InfoCommand(),
-                new UpdateCommand(),
-                new WriteTargetCommand()
-            };
-        }
-
         [Description("update XLF translation data from specified .resx input file")]
         public class UpdateCommand : Command
         {
@@ -61,7 +51,7 @@
             [CommandArg(HelpText = "the file to export into", IsRequired = true)]
             public string Out { get; set; }
 
-            [CommandArg(HelpText = "restrict units to specified states (delimiter=;)", IsRequired = false)]
+            [CommandArg(HelpText = "restrict units to specified states (delimiter is ';')", IsRequired = false)]
             public string Filter { get; set; }
 
             [CommandArg(HelpText = "include a custom id as separate column", IsRequired = false)]
@@ -70,8 +60,8 @@
             [CommandArg(HelpText = "include the language as separate column", IsRequired = false)]
             public bool WithLanguage { get; set; }
 
-            [CommandArg(HelpText = "first row of the CSV file contains the column names (default: true)", IsRequired = false)]
-            public bool WithHeaders { get; set; }
+            [CommandArg(HelpText = "do not include column names as first row of the CSV file", IsRequired = false)]
+            public bool NoHeader { get; set; }
         }
 
         [Description("retrieve xlf file information")]
