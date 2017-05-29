@@ -28,7 +28,7 @@
                 var file = doc.Files.First();
 
                 var exporter = new TestXlfExporter();
-                file.Export(null, exporter, null);
+                file.Export(null, exporter, null, null, XlfDialect.Standard);
                 Assert.IsTrue(exporter.Units.Count > 0);
                 Assert.AreEqual(exporter.Units.Count, file.TransUnits.Count());
             }
@@ -44,7 +44,7 @@
 
                 var exporter = new TestXlfExporter();
                 var fileName = Guid.NewGuid().ToString();
-                file.Export(fileName, exporter, null);
+                file.Export(fileName, exporter, null, null, XlfDialect.Standard);
                 Assert.AreEqual(exporter.File, fileName);
             }
         }
@@ -58,12 +58,18 @@
                 var file = doc.Files.First();
 
                 var exporter = new TestXlfExporter();
-                file.Export(null, exporter, new List<string>() { "this-state-does-not-exist" });
+                file.Export(null, exporter, new List<string>() { "this-state-does-not-exist" }, null, XlfDialect.Standard);
                 Assert.AreEqual(exporter.Units.Count, 0);
 
-                file.Export(null, exporter, new List<string>() { "this-state-does-not-exist", "final" });
+                file.Export(null, exporter, new List<string>() { "this-state-does-not-exist", "final" }, null, XlfDialect.Standard);
                 Assert.IsTrue(exporter.Units.Count > 0);
             }
+        }
+
+        [TestMethod]
+        public void ExporterGetsOnlySpecifedResTypes()
+        {
+            throw new NotImplementedException();
         }
 
         [TestMethod]

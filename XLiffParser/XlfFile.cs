@@ -198,13 +198,17 @@
             }).Remove();
         }
 
-        public void Export(string outputFilePath, IXlfExporter handler, List<string> stateFilter)
+        public void Export(string outputFilePath, IXlfExporter handler, List<string> stateFilter, List<string> restTypeFilter, XlfDialect dialect)
         {
             var units = stateFilter != null && stateFilter.Any() ?
                 TransUnits.Where(u => stateFilter.Contains(u.Optional.TargetState)) :
                 TransUnits;
 
-            handler.ExportTranslationUnits(outputFilePath, units, Optional.TargetLang);
+            units = restTypeFilter != null && restTypeFilter.Any() ?
+                units.Where(u => restTypeFilter.Contains(u.Optional.Restype)) :
+                units;
+
+            handler.ExportTranslationUnits(outputFilePath, units, Optional.TargetLang, dialect);
         }
 
         public class Optionals

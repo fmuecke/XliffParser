@@ -51,8 +51,14 @@
             [CommandArg(HelpText = "the file to export into", IsRequired = true)]
             public string Out { get; set; }
 
+            [CommandArg(HelpText = "the XLF dialect: MultilingualAppToolkit, RCWinTrans11, Standard (default)")]
+            public string Dialect { get; set; }
+
             [CommandArg(HelpText = "restrict units to specified states (delimiter is ';')", IsRequired = false)]
             public string Filter { get; set; }
+
+            [CommandArg(HelpText = "restrict units to specified restypes (delimiter is ';')", IsRequired = false)]
+            public string ResTypeFilter { get; set; }
 
             [CommandArg(HelpText = "include a custom id as separate column", IsRequired = false)]
             public string CustomIdColumn { get; set; }

@@ -20,7 +20,7 @@
 
         public bool IsCsvHeaderRequired { get; internal set; }
 
-        public void ExportTranslationUnits(string filePath, IEnumerable<XlfTransUnit> units, string language)
+        public void ExportTranslationUnits(string filePath, IEnumerable<XlfTransUnit> units, string language, XlfDialect dialect)
         {
             using (var textWriter = new System.IO.StreamWriter(filePath, false, Encoding.UTF8))
             {
@@ -40,9 +40,9 @@
                         csv.WriteField(CustomIdColumn);
                     }
 
-                    csv.WriteField(t.Id);
-                    csv.WriteField(t.Source);
-                    csv.WriteField(t.Target);
+                    csv.WriteField(t.GetId(dialect));
+                    csv.WriteField(/*XmlUtil.DeNormalizeLineBreaks(*/t.Source);
+                    csv.WriteField(/*XmlUtil.DeNormalizeLineBreaks(*/t.Target);
                     csv.WriteField(t.Optional.TargetState);
 
                     if (this.IsLangColumnRequired)

@@ -11,6 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>
+        v0.5.6: csv exporter supports different XLIFF dialects
         v0.5.5: added handler for new xlf exporter interface
         v0.5.4: targeting .Net 4.5 for better compatibility
         v0.5.3: target element can be optional</releaseNotes>

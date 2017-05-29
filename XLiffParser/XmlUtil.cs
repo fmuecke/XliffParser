@@ -31,7 +31,22 @@
 
         public static string NormalizeLineBreaks(string s)
         {
+            if (string.IsNullOrWhiteSpace(s))
+            {
+                return string.Empty;
+            }
+
             return s.Replace("\r", string.Empty);
+        }
+
+        public static string DeNormalizeLineBreaks(string s)
+        {
+            if (string.IsNullOrWhiteSpace(s))
+            {
+                return string.Empty;
+            }
+
+            return NormalizeLineBreaks(s).Replace("\r", "\r\n");
         }
     }
 }

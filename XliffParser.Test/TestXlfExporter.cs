@@ -16,7 +16,7 @@
 
         public List<XlfTransUnit> Units { get; set; }
 
-        public void ExportTranslationUnits(string filePath, IEnumerable<XlfTransUnit> units, string targetLanguage)
+        public void ExportTranslationUnits(string filePath, IEnumerable<XlfTransUnit> units, string targetLanguage, XlfDialect dialect)
         {
             File = filePath;
             Lang = targetLanguage;

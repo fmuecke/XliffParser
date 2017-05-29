@@ -8,6 +8,6 @@
 
     public interface IXlfExporter
     {
-        void ExportTranslationUnits(string filePath, IEnumerable<XlfTransUnit> units, string targetLanguage);
+        void ExportTranslationUnits(string filePath, IEnumerable<XlfTransUnit> units, string targetLanguage, XlfDialect dialect);
     }
 }

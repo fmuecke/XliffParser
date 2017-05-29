@@ -64,8 +64,19 @@
                 IsLangColumnRequired = cmd.WithLanguage
             };
 
+            XlfDialect dialect = XlfDialect.Standard;
+            if (cmd?.Dialect == "RCWinTrans11")
+            {
+                dialect = XlfDialect.RCWinTrans11;
+            }
+            else if (cmd?.Dialect == "MultilingualAppToolkit")
+            {
+                dialect = XlfDialect.MultilingualAppToolkit;
+            }
+
             var stateFilter = string.IsNullOrWhiteSpace(cmd.Filter) ? null : cmd.Filter.Split(';').ToList();
-            doc.Files.First().Export(cmd.Out, csv, stateFilter);
+            var resTypeFilter = string.IsNullOrWhiteSpace(cmd.ResTypeFilter) ? null : cmd.ResTypeFilter.Split(';').ToList();
+            doc.Files.First().Export(cmd.Out, csv, stateFilter, resTypeFilter, dialect);
 
             return 0;
         }
