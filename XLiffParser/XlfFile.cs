@@ -143,7 +143,7 @@
             }
             else if (dialect == XlfDialect.MultilingualAppToolkit)
             {
-                if (!id.ToLowerInvariant().StartsWith(XlfTransUnit.ResxPrefix.ToLowerInvariant()))
+                if (!id.StartsWith(XlfTransUnit.ResxPrefix, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return new XlfTransUnit(n, this.ns, XlfTransUnit.ResxPrefix + id, source, target);
                 }

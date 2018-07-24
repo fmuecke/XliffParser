@@ -89,9 +89,9 @@
                     break;
 
                 case XliffParser.XlfDialect.MultilingualAppToolkit:
-                    if (Id.ToLowerInvariant().StartsWith(XlfTransUnit.ResxPrefix.ToLowerInvariant()))
+                    if (Id.StartsWith(ResxPrefix, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        id = Id.Substring(XliffParser.XlfTransUnit.ResxPrefix.Length);
+                        id = Id.Substring(ResxPrefix.Length);
                     }
 
                     break;
