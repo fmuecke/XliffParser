@@ -16,7 +16,8 @@
                 throw new ArgumentNullException(nameof(node));
             }
 
-            return node.Attributes(name).Any() ? node.Attribute(name).Value : string.Empty;
+            var a = node.Attribute(name);
+            return a != null ? a.Value : string.Empty;
         }
 
         public static int GetIntAttributeIfExists(XElement node, string name)
@@ -26,7 +27,8 @@
                 throw new ArgumentNullException(nameof(node));
             }
 
-            return node.Attributes(name).Any() ? int.Parse(node.Attribute(name).Value) : 0;
+            var a = node.Attribute(name);
+            return a != null ? int.Parse(a.Value) : 0;
         }
 
         public static string NormalizeLineBreaks(string s)
