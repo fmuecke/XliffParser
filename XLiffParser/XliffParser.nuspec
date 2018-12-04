@@ -11,13 +11,14 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>
-      v0.5.7: better performance
+      v0.5.8: fixed a null reference exception
+	  v0.5.7: better performance
       v0.5.6: csv exporter supports different XLIFF dialects
       v0.5.5: added handler for new xlf exporter interface
       v0.5.4: targeting .Net 4.5 for better compatibility
       v0.5.3: target element can be optional
     </releaseNotes>
-    <copyright>Copyright © 2017  Florian Mücke</copyright>
+    <copyright>Copyright © 2018  Florian Mücke</copyright>
     <tags>XLF XLIFF Resx translation</tags>
     <dependencies />
   </metadata>
