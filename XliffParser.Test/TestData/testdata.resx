@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="SomeName" xml:space="preserve">
+    <value>This is the text for some name.</value>
+  </data>
+  <data name="ChangedItem" xml:space="preserve">
+    <value>This item's value was changed</value>
+  </data>
+  <data name="NewItem" xml:space="preserve">
+    <value>As new as it gets</value>
+  </data>
+  <data name="ItemWithComment" xml:space="preserve">
+    <value>This item has a comment!</value>
+	<comment>No comment!</comment>
+  </data>
+  <data name="NewItem" xml:space="preserve">
+    <value>As new as it gets</value>
+  </data>  
+  <data name="StateItem-final" xml:space="preserve">
+	<value>Indicates the terminating state.</value>
+  </data>
+  <data name="StateItem-needs-adaptation" xml:space="preserve">
+	<value>Indicates only non-textual information needs adaptation.</value>
+  </data>
+  <data name="StateItem-needs-l10n" xml:space="preserve">
+  <value>Indicates both text and non-textual information needs adaptation.</value>
+  </data>
+  <data name="StateItem-needs-review-adaptation" xml:space="preserve">
+	<value>Indicates only non-textual information needs review.</value>
+  </data>
+  <data name="StateItem-needs-review-l10n" xml:space="preserve">
+	<value>Indicates both text and non-textual information needs review.</value>
+  </data>
+  <data name="StateItem-needs-review-translation" xml:space="preserve">
+	<value>Indicates that only the text of the item needs to be reviewed.</value>
+  </data>
+  <data name="StateItem-needs-translation" xml:space="preserve">
+	<value>Indicates that the item needs to be translated.</value>
+  </data>
+  <data name="StateItem-new" xml:space="preserve">
+	<value>Indicates that the item is new. For example, translation units that were not in a previous version of the document.</value>
+  </data>
+  <data name="StateItem-signed-off" xml:space="preserve">
+	<value>Indicates that changes are reviewed and approved.</value>
+  </data>
+  <data name="StateItem-translated" xml:space="preserve">
+	<value>Indicates that the item has been translated.</value>
+  </data>
+  <data name="UntranslatableItem" xml:space="preserve">
+	<value>DoNotTranslate</value>
+  </data>
+</root>
