@@ -85,7 +85,7 @@
             switch (dialect)
             {
                 case XlfDialect.RCWinTrans11:
-                    id = Optional.Resname;
+                    id = Optional?.Resname ?? Id;
                     break;
 
                 case XliffParser.XlfDialect.MultilingualAppToolkit:

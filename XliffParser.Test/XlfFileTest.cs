@@ -67,6 +67,32 @@
         }
 
         [TestMethod]
+        public void GetTransUnit_Throws_InvalidOperation_if_id_is_wrong()
+        {
+            using (var sample = new ResxWithStaleCorrespondingXlf())
+            {
+                var doc = new XlfDocument(sample.XlfFileName);
+                var file = doc.Files.First();
+                Assert.ThrowsException<InvalidOperationException>(() => file.GetTransUnit(null, doc.Dialect));
+                Assert.ThrowsException<InvalidOperationException>(() => file.GetTransUnit(string.Empty, doc.Dialect));
+                Assert.ThrowsException<InvalidOperationException>(() => file.GetTransUnit(Guid.NewGuid().ToString(), doc.Dialect));
+            }
+        }
+
+        [TestMethod]
+        public void TryGetTransUnit_DoesNotThrow_if_id_is_wrong()
+        {
+            using (var sample = new ResxWithStaleCorrespondingXlf())
+            {
+                var doc = new XlfDocument(sample.XlfFileName);
+                var file = doc.Files.First();
+                Assert.IsFalse(file.TryGetTransUnit(null, doc.Dialect, out XlfTransUnit u));
+                Assert.IsFalse(file.TryGetTransUnit(string.Empty, doc.Dialect, out XlfTransUnit u2));
+                Assert.IsFalse(file.TryGetTransUnit(Guid.NewGuid().ToString(), doc.Dialect, out XlfTransUnit u3));
+            }
+        }
+
+        [TestMethod]
         public void ExporterGetsOnlySpecifedResTypes()
         {
             throw new NotImplementedException();

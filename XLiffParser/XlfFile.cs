@@ -84,8 +84,7 @@
 
         public XlfTransUnit AddTransUnit(string id, string source, string target, AddMode addMode, XlfDialect dialect)
         {
-            XlfTransUnit resultUnit;
-            if (TryGetTransUnit(id, dialect, out resultUnit))
+            if (TryGetTransUnit(id, dialect, out XlfTransUnit resultUnit))
             {
                 switch (addMode)
                 {
@@ -165,6 +164,11 @@
                 return true;
             }
             catch (InvalidOperationException)
+            {
+                unit = null;
+                return false;
+            }
+            catch (NullReferenceException)
             {
                 unit = null;
                 return false;
