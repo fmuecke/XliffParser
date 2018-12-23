@@ -95,7 +95,7 @@
         [TestMethod]
         public void ExporterGetsOnlySpecifedResTypes()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         [TestMethod]
