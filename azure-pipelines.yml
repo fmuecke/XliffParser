@@ -33,6 +33,28 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- task: NuGetCommand@2
+  inputs:
+    command: pack
+    packagesToPack: 'XliffParser/XliffParser.csproj'
+    #configuration: '$(BuildConfiguration)' # Optional
+    #packDestination: '$(Build.ArtifactStagingDirectory)' # Optional
+    #versioningScheme: 'off' # Options: off, byPrereleaseNumber, byEnvVar, byBuildNumber
+    includeReferencedProjects: true
+    includeSymbols: true
+    #toolPackage: # Optional
+
+- task: NuGetCommand@2
+  inputs:
+    command: pack
+    packagesToPack: 'XliffParser.Tool/XliffParser.Tool.csproj'
+    #configuration: '$(BuildConfiguration)' # Optional
+    #packDestination: '$(Build.ArtifactStagingDirectory)' # Optional
+    #versioningScheme: 'off' # Options: off, byPrereleaseNumber, byEnvVar, byBuildNumber
+    includeReferencedProjects: true
+    includeSymbols: true
+    toolPackage: true
+
 - task: PublishBuildArtifacts@1
   inputs:
     pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
