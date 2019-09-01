@@ -53,3 +53,6 @@ Console.WriteLine("updated: {0}, added: {1}, removed: {2}",
     result.UpdatedItems.Count(), result.AddedItems.Count(), result.RemovedItems.Count());
 ```
 
+### Donation
+If you think the project is a good idea, you could buy me a coffee or a beer :)
+[![](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=AFJGZ7F96PHXW)
