@@ -1,6 +1,5 @@
 ﻿namespace XliffParser
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Xml.Linq;
@@ -44,8 +43,16 @@
 
         public string Source
         {
-            get { return this.node.Element(this.ns + ElementSource).Value; }
-            set { this.node.SetElementValue(this.ns + ElementSource, value); }
+            get
+            {
+                var source = this.node.Element(this.ns + ElementSource);
+                return source.Nodes().Aggregate(string.Empty, GetNodeValueWithoutNamespace);
+            }
+
+            set
+            {
+                this.node.SetElementValue(this.ns + ElementSource, value);
+            }
         }
 
         /// <summary>
@@ -62,7 +69,7 @@
                     return null;
                 }
 
-                return targets.First().Value;
+                return targets.First().Nodes().Aggregate(string.Empty, GetNodeValueWithoutNamespace);
             }
 
             set
@@ -77,6 +84,16 @@
                     this.node.SetElementValue(this.ns + ElementTarget, value);
                 }
             }
+        }
+
+        private string GetNodeValueWithoutNamespace(string currentValue, XNode node)
+        {
+            if (node is XElement elementNode)
+            {
+                elementNode.Name = elementNode.Name.LocalName;
+            }
+
+            return currentValue + node.ToString();
         }
 
         public string GetId(XlfDialect dialect)

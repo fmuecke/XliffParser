@@ -1,10 +1,6 @@
 ﻿namespace XliffParser.Test
 {
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Xml.Linq;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using XliffParser;
@@ -53,6 +49,10 @@
             "          <source>Continue</source>" +
             "          <target state=\"final\">Continue</target>" +
             "        </trans-unit>" +
+            "        <trans-unit resname=\"Button_ContinueTest\" id=\"none\" restype=\"x-text\">" +
+            "          <source>Continue<span>Test</span></source>" +
+            "          <target state=\"final\">Continue</target>" +
+            "        </trans-unit>" +
             "	  </group>" +
             "    </body>" +
             "  </file>" +
@@ -95,10 +95,44 @@
             "          <source>XLIFF</source>" +
             "          <target state=\"signed-off\">XLIFF</target>" +
             "        </trans-unit>" +
+            "        <trans-unit id=\"Resx/State_translated_withXML\" translate=\"no\" xml:space=\"preserve\">" +
+            "          <source>XLIFF<span>Test</span></source>" +
+            "          <target state=\"signed-off\">XLIFF<span>Test</span></target>" +
+            "        </trans-unit>" +
             "      </group>" +
             "    </body>" +
             "  </file>" +
             "</xliff>";
+
+        [TestMethod]
+        public void SourceWithXMLShouldReturnSubNodes()
+        {
+            var doc = XDocument.Parse(xlf12doc);
+            var ns = doc.Root.Name.Namespace;
+            var node = doc.Descendants(ns + "trans-unit")
+                .Where(t =>
+                {
+                    return t.Attribute(XName.Get("id")).Value == "Resx/State_translated_withXML";
+                })
+                .Single();
+
+            var unit = new XlfTransUnit(node, ns);
+
+            Assert.AreEqual("XLIFF<span>Test</span>", unit.Source);
+
+            doc = XDocument.Parse(xlf11doc);
+            ns = doc.Root.Name.Namespace;
+            node = doc.Descendants(ns + "trans-unit")
+                .Where(t =>
+                {
+                    return t.Attribute(XName.Get("resname")).Value == "Button_ContinueTest";
+                })
+                .Single();
+
+            unit = new XlfTransUnit(node, ns);
+
+            Assert.AreEqual("Continue<span>Test</span>", unit.Source);
+        }
 
         [TestMethod]
         public void AddNoteTest()
