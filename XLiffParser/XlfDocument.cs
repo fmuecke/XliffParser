@@ -32,6 +32,20 @@
             Dialect = DetermineDialect();
         }
 
+        public XlfDocument(string fileName, XDocument document, XlfDialect dialect)
+        {
+            FileName = fileName;
+            doc = document;
+            Dialect = dialect;
+        }
+
+        public static XlfDocument Create(string fileName)
+        {
+            var doc = new XDocument(
+                new XElement(XName.Get("xliff", "urn:oasis:names:tc:xliff:document:1.2"), new XAttribute("version", "1.2")));
+            return new XlfDocument(fileName, doc, XlfDialect.Standard);
+        }
+
         [Flags]
         public enum ResXSaveOption
         {
@@ -67,7 +81,17 @@
         {
             var ns = this.doc.Root.Name.Namespace;
             var f = new XElement(ns + ElementFile);
-            this.doc.Descendants(ns + ElementFile).Last().AddAfterSelf(f);
+
+            var lastfile = this.doc.Descendants(ns + ElementFile).LastOrDefault();
+            if (lastfile != null)
+            {
+                lastfile.AddAfterSelf(f);
+            }
+            else
+            {
+                this.doc.Root.Add(f);
+            }
+                
 
             return new XlfFile(f, ns, original, dataType, sourceLang);
         }

@@ -160,8 +160,8 @@
         {
             try
             {
-                unit = GetTransUnit(id, dialect);
-                return true;
+                unit = TransUnits.FirstOrDefault(u => u.GetId(dialect) == id);
+                return unit != null;
             }
             catch (InvalidOperationException)
             {
